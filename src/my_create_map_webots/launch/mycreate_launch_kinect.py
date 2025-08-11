@@ -133,10 +133,13 @@ def generate_launch_description():
 # <param name="range_max"       type="double" value="10.0"/> <!--default: 10m. Ranges less than this are considered +Inf. -->
 # <param name="output_frame_id" type="str"    value="camera_depth_frame"/> <!--default: camera_depth_frame. Frame id of the laser scan. -->
             "range_max": 4.0,
+            "range_min": 0.05,
+            "scan_height": 10,
+            "use_sim_time": True,
         }],
         remappings=[
             ("depth", "/camera/depth/image_raw"),
-            ("depth_camera_info", "/camera/camera_info"),
+            ("depth_camera_info", "/camera/depth/camera_info"),
         ]
     )
 

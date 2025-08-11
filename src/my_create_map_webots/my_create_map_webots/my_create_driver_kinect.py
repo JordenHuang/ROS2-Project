@@ -79,6 +79,7 @@ class MyCreateDriverKinect:
         self.camImgPub = self.node.create_publisher(Image, "/camera/image_raw", reliable_qos_profile)
         self.camInfoPub = self.node.create_publisher(CameraInfo, "/camera/camera_info", reliable_qos_profile)
         self.camDepthPub = self.node.create_publisher(Image, "/camera/depth/image_raw", reliable_qos_profile)
+        self.depthCamInfoPub = self.node.create_publisher(CameraInfo, "/camera/depth/camera_info", reliable_qos_profile)
 
         #建立轉換器物件
         self.bridge = CvBridge()
@@ -168,7 +169,6 @@ class MyCreateDriverKinect:
         camInfoMsg.r = self.R # R must be flattened to a 1D list of 9 elements
         camInfoMsg.p = self.P_left # P must be flattened to a 1D list of 12 elements
 
-
         # --- Publish ---
         self.camInfoPub.publish(camInfoMsg)
 
@@ -176,7 +176,6 @@ class MyCreateDriverKinect:
         # --- Get depth image
         depthImgRaw = self.camera_range.getRangeImageArray()
         depthImg = np.asarray(depthImgRaw, dtype=np.float32)
-        # depthImg = depthImg.reshape((-1, self.camera_range.getWidth()))
 
         # --- Create message ---
         encoding = "32FC1"
@@ -189,15 +188,20 @@ class MyCreateDriverKinect:
         # --- Publish ---
         self.camDepthPub.publish(imgMsg)
 
-        # FIXME:
-        '''
-[webots_controller_MyCreate_kinect-3] Traceback (most recent call last):
-[webots_controller_MyCreate_kinect-3]   File "/home/jordenhuang/ROS2-Project/build/my_create_map_webots/my_create_map_webots/my_create_driver_kinect.py", line 190, in step
-[webots_controller_MyCreate_kinect-3]     self.camDepthPub.publish(imgMsg)
-[webots_controller_MyCreate_kinect-3]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/publisher.py", line 74, in publish
-[webots_controller_MyCreate_kinect-3]     raise TypeError('Expected {}, got {}'.format(self.msg_type, type(msg)))
-[webots_controller_MyCreate_kinect-3] TypeError: Expected <class 'sensor_msgs.msg._camera_info.CameraInfo'>, got <class 'sensor_msgs.msg._image.Image'>
-        '''
+        # === Publish depth camera info ===
+        depthCamInfoMsg = CameraInfo()
+        depthCamInfoMsg.header.stamp = now
+        depthCamInfoMsg.header.frame_id = 'camera_depth_optical_frame' # Must match image frame_id
+        depthCamInfoMsg.width = self.camWidth
+        depthCamInfoMsg.height = self.camHeight
+        depthCamInfoMsg.distortion_model = "plumb_bob" # Common distortion model (assuming no distortion here)
+        depthCamInfoMsg.d = self.D
+        depthCamInfoMsg.k = self.K.flatten().tolist() # K must be flattened to a 1D list of 9 elements
+        depthCamInfoMsg.r = self.R # R must be flattened to a 1D list of 9 elements
+        depthCamInfoMsg.p = self.P_left # P must be flattened to a 1D list of 12 elements
+
+        # --- Publish ---
+        self.depthCamInfoPub.publish(depthCamInfoMsg)
 
         rclpy.spin_once(self.node, timeout_sec=0)
 

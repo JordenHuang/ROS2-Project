@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-<robot name="/home/jordenhuang/ROS2-Project/src/my_create_map_webots/resource/MySupervisor.urdf" xmlns:xacro="http://ros.org/wiki/xacro">
-  <webots>
-    <plugin type="my_create_map_webots.MySupervisorDriver.MySupervisorDriver"/>
-  </webots>
-  <link name="base_link">
-  </link>
-</robot>

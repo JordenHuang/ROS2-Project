@@ -1459,6 +1459,6 @@ MyCreate_kinect {
   controller "<extern>"
   camera_width 360
   camera_height 280
-  camera_rotation 0 1 0 0.261799  # 15 degree
+  #camera_rotation 0 1 0 0.261799  # 15 degree
   #camera_rotation 0 1 0 0.174532  # 10 degree
 }

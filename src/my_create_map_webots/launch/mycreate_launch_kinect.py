@@ -16,6 +16,7 @@ from launch.substitutions import PathJoinSubstitution
 def generate_launch_description():
     package_dir = get_package_share_directory('my_create_map_webots')
     robot_description_path = os.path.join(package_dir, 'resource', 'MyCreate_kinect.urdf')
+    rviz_config_file = os.path.join(package_dir, 'config', 'rviz_config.rviz')
     world_path = os.path.join(package_dir, 'worlds', 'school-obstacle.wbt')
 
     webots = WebotsLauncher(
@@ -42,43 +43,6 @@ def generate_launch_description():
         }]
     )
 
-    # window_size = 13
-    # p1 = 216 #8 * 3 * window_size**2
-    # p2 = 864 #32 * 3 * window_size**2
-    # stereo_image_proc = IncludeLaunchDescription(
-    #     PathJoinSubstitution([
-    #         FindPackageShare('stereo_image_proc'),
-    #         'launch',
-    #         'stereo_image_proc.launch.py'
-    #     ]),
-    #     launch_arguments={
-    #         # 'namespace': 'stereo',
-    #         # 'approximate_sync': 'True',
-    #         # 'stereo_algorithm': '1',
-    #         # 'sgbm_mode': '2',
-
-    #         # 'disparity_range': '192',       # 視差範圍，必須是 16 的倍數
-    #         # 'correlation_window_size': str(window_size),   # 必須是奇數，通常 3-11
-    #         # 'P1': "{:.1f}".format(p1),   # 視差平滑度參數 (8 * channels * blockSize^2)
-    #         # 'P2': "{:.1f}".format(p2),  # 視差平滑度參數 (32 * channels * blockSize^2)
-    #         # 'disp12_max_diff': '1',         # 允許左右視差的最大差異
-    #         # 'speckle_window_size': '200',
-    #         # 'speckle_range': '2',
-    #         # 'uniqueness_ratio': "{:.1f}".format(10),      # 唯一性比率，用於濾波
-    #         # 'prefilter_cap': '63',         # 預濾波器截斷值
-    #     }.items(),
-    # )
-
-    # disparity_image_view = Node(
-    #     package='image_view',
-    #     executable='disparity_view',
-    #     name='disparity_image_view',
-    #     remappings=[
-    #         ('image', '/disparity')
-    #     ]
-    # )
-
-
     # rgbd Odometry Node
     rgbd_odometry_node = Node(
         package='rtabmap_odom',
@@ -99,27 +63,6 @@ def generate_launch_description():
         ]
     )
 
-    # rtabmap_disparity_to_depth = Node(
-    #     package='rtabmap_util',
-    #     executable='disparity_to_depth',
-    #     name='rtabmap_disparity_to_depth',
-    #     namespace='disparity2depth',
-    #     remappings=[
-    #         ('disparity', '/disparity')
-    #     ]
-    # )
-
-    # rtabmap_pointcloud_to_depthimage = Node(
-    #     package='rtabmap_util',
-    #     executable='pointcloud_to_depthimage',
-    #     name='rtabmap_pointcloud_to_depthimage',
-    #     namespace='pointcloud2depthImage',
-    #     remappings=[
-    #         ('camera_info', '/left/camera_info'),
-    #         ('cloud', '/points2')
-    #     ],
-    # )
-
     depth_image_to_laserscan = Node(
         package="depthimage_to_laserscan",
         executable="depthimage_to_laserscan_node",
@@ -133,7 +76,7 @@ def generate_launch_description():
 # <param name="range_max"       type="double" value="10.0"/> <!--default: 10m. Ranges less than this are considered +Inf. -->
 # <param name="output_frame_id" type="str"    value="camera_depth_frame"/> <!--default: camera_depth_frame. Frame id of the laser scan. -->
             "range_max": 4.0,
-            "range_min": 0.05,
+            "range_min": 0.01,
             "scan_height": 10,
             "use_sim_time": True,
         }],
@@ -154,20 +97,22 @@ def generate_launch_description():
             'frame_id': 'base_link',
             'subscribe_depth': True,
             'subscribe_scan': True,
+            'subscribe_odom_info': True,
             'publish_tf': True,
             'approx_sync': True,
 
-            # 'map_always_update': True,
+            'map_always_update': True,
             # 'map_empty_ray_tracing': True,
 
-            "RGBD/ProximityBySpace": "false",
-            "RGBD/AngularUpdate": "0.01",
-            "RGBD/LinearUpdate": "0.01",
-            "RGBD/OptimizeFromGraphEnd": "false",
-            "Reg/Force3DoF": "true",
-            "Vis/MinInliers": "12",
+            # "RGBD/ProximityBySpace": "false",
+            # "RGBD/AngularUpdate": "0.01",
+            # "RGBD/LinearUpdate": "0.01",
+            # "RGBD/OptimizeFromGraphEnd": "false",
+            # "Reg/Force3DoF": "true",
+            # "Vis/MinInliers": "12",
+            # "MaxObstacleHeight": "0.1",
 
-            "Grid/Sensor": "1",
+            "Grid/Sensor": "0",
         }],
         remappings=[
             ('rgb/image', '/camera/image_raw'),
@@ -179,7 +124,7 @@ def generate_launch_description():
             # # ('depth/image', '/pointcloud2depthImage/image'),
             # ('depth/image', '/disparity2depth/depth'),
         ],
-        arguments=['-d', "--udebug"]
+        arguments=['-d',]# "--udebug"]
     )
 
     rtabmap_viz = Node(
@@ -202,21 +147,21 @@ def generate_launch_description():
         ],
     )
 
+    rviz2 = Node(
+        package="rviz2",
+        executable="rviz2",
+        name="rviz2",
+        arguments=['-d', rviz_config_file, '--ros-args', '--log-level', 'warn'],
+        parameters=[{'use_sim_time': True}],
+    )
+
     return LaunchDescription([
         webots,
         webots._supervisor,
         my_robot_driver,
-        rtabmap_viz,
+        # rtabmap_viz,
+        rviz2,
 
-        # TimerAction(
-        #     period=5.0,
-        #     actions=[
-        #         # stereo_image_proc,
-        #         # rtabmap_pointcloud_to_depthimage,
-        #         # rtabmap_disparity_to_depth,
-        #         # disparity_image_view,
-        #     ]
-        # ),
         TimerAction(
             period=2.0,
             actions=[

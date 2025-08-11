@@ -25,9 +25,13 @@ from controller import Supervisor
 
 
 # --- Constants ---
-LINEAR_SPEED_FORWARD = 0.22
-LINEAR_SPEED_BACKWARD = 0.15
-ANGULAR_SPEED = 1.0
+# LINEAR_SPEED_FORWARD = 0.22
+# LINEAR_SPEED_BACKWARD = 0.15
+# ANGULAR_SPEED = 1.0
+
+WHEEL_RADIUS       = 0.031
+AXLE_LENGTH        = 0.271756 # 0.235
+
 
 class MyCreateDriverKinect:
     def init(self, webots_node, properties):
@@ -66,6 +70,8 @@ class MyCreateDriverKinect:
         self.inertial_unit = self._robot.getDevice("inertial unit")
         self.inertial_unit.enable(self._TIMESTEP)
 
+        self.__target_twist = Twist()
+
         rclpy.init(args=None)
         self.node = rclpy.create_node("my_create_node")
 
@@ -81,12 +87,18 @@ class MyCreateDriverKinect:
         self.camDepthPub = self.node.create_publisher(Image, "/camera/depth/image_raw", reliable_qos_profile)
         self.depthCamInfoPub = self.node.create_publisher(CameraInfo, "/camera/depth/camera_info", reliable_qos_profile)
 
+        # Subscriber
+        self.node.create_subscription(Twist, 'cmd_vel', self.__cmd_vel_callback, 1)
+
         #建立轉換器物件
         self.bridge = CvBridge()
         self.node.get_logger().info(f"Driver init done")
 
         # Calculate camera intrinsics and extrinsics (ONLY ONCE)
         self._calculate_camera_parameters()
+
+    def __cmd_vel_callback(self, twist):
+        self.__target_twist = twist
 
     def step(self):
         self._counter += 1
@@ -108,8 +120,16 @@ class MyCreateDriverKinect:
             self._left_motor.setVelocity(vel)
             self._right_motor.setVelocity(-vel)
         else:
-            self._left_motor.setVelocity(0.0)
-            self._right_motor.setVelocity(0.0)
+            forward_speed = self.__target_twist.linear.x
+            angular_speed = self.__target_twist.angular.z
+
+            command_motor_left = (forward_speed - angular_speed * AXLE_LENGTH/2) / WHEEL_RADIUS / 3
+            command_motor_right = (forward_speed + angular_speed * AXLE_LENGTH/2) / WHEEL_RADIUS / 3
+            self._left_motor.setVelocity(command_motor_left)
+            self._right_motor.setVelocity(command_motor_right)
+
+            # self._left_motor.setVelocity(0.0)
+            # self._right_motor.setVelocity(0.0)
 
         # if self._counter < 50:
         #     return

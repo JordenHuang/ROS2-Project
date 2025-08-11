@@ -35,6 +35,9 @@ setup(
 
         (f'share/{package_name}/textures/SofaLeather', glob('textures/SofaLeather/*')),
         (f'share/{package_name}/textures/WoodFloor', glob('textures/WoodFloor/*')),
+
+        # Config files
+        (f'share/{package_name}/config', glob('config/*')),
     ],
     
     install_requires=['setuptools'],

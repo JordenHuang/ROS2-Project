@@ -28,8 +28,8 @@
     <parent link="base_link"/>
     <child link="Kinect"/>
     <!-- Position the camera 14cm forward and 10cm up from the base_link origin -->
-    <!-- <origin xyz="0.14 0 0.10" rpy="0 0 0"/> -->
-    <origin xyz="0.14 0 0.10" rpy="0 0.261799 0"/>
+    <origin xyz="0.14 0 0.10" rpy="0 0 0"/>
+    <!-- <origin xyz="0.14 0 0.10" rpy="0 0.261799 0"/> -->
     <!-- <origin xyz="0.14 0 0.10" rpy="0 0.174532 0"/> -->
   </joint>
 

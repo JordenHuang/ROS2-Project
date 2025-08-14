@@ -16,8 +16,8 @@ from launch.substitutions import PathJoinSubstitution
 def generate_launch_description():
     package_dir = get_package_share_directory('my_create_map_webots')
     robot_description_path = os.path.join(package_dir, 'resource', 'MyCreate_kinect.urdf')
-    # rviz_config_file = os.path.join(package_dir, 'config', 'rviz_config.rviz')
-    rviz_config_file = os.path.join(package_dir, 'config', 'rviz_config_ours.rviz')
+    rviz_config_file = os.path.join(package_dir, 'config', 'rviz_config.rviz')
+    # rviz_config_file = os.path.join(package_dir, 'config', 'rviz_config_ours.rviz')
     world_path = os.path.join(package_dir, 'worlds', 'school-obstacle.wbt')
 
     webots = WebotsLauncher(

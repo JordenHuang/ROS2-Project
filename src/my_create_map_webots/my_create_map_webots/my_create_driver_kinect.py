@@ -123,8 +123,8 @@ class MyCreateDriverKinect:
             forward_speed = self.__target_twist.linear.x
             angular_speed = self.__target_twist.angular.z
 
-            command_motor_left = (forward_speed - angular_speed * AXLE_LENGTH/2) / WHEEL_RADIUS / 3
-            command_motor_right = (forward_speed + angular_speed * AXLE_LENGTH/2) / WHEEL_RADIUS / 3
+            command_motor_left = (forward_speed - angular_speed * AXLE_LENGTH/2) / WHEEL_RADIUS / 2.5
+            command_motor_right = (forward_speed + angular_speed * AXLE_LENGTH/2) / WHEEL_RADIUS / 2.5
             self._left_motor.setVelocity(command_motor_left)
             self._right_motor.setVelocity(command_motor_right)
 

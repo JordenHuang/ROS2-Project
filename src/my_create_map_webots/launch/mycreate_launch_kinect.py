@@ -16,7 +16,8 @@ from launch.substitutions import PathJoinSubstitution
 def generate_launch_description():
     package_dir = get_package_share_directory('my_create_map_webots')
     robot_description_path = os.path.join(package_dir, 'resource', 'MyCreate_kinect.urdf')
-    rviz_config_file = os.path.join(package_dir, 'config', 'rviz_config.rviz')
+    # rviz_config_file = os.path.join(package_dir, 'config', 'rviz_config.rviz')
+    rviz_config_file = os.path.join(package_dir, 'config', 'rviz_config_ours.rviz')
     world_path = os.path.join(package_dir, 'worlds', 'school-obstacle.wbt')
 
     webots = WebotsLauncher(
@@ -102,14 +103,13 @@ def generate_launch_description():
             'approx_sync': True,
 
             'map_always_update': True,
-            # 'map_empty_ray_tracing': True,
 
-            # "RGBD/ProximityBySpace": "false",
-            # "RGBD/AngularUpdate": "0.01",
-            # "RGBD/LinearUpdate": "0.01",
-            # "RGBD/OptimizeFromGraphEnd": "false",
-            # "Reg/Force3DoF": "true",
-            # "Vis/MinInliers": "12",
+            "RGBD/ProximityBySpace": "false",
+            "RGBD/AngularUpdate": "0.01",
+            "RGBD/LinearUpdate": "0.01",
+            "RGBD/OptimizeFromGraphEnd": "false",
+            "Reg/Force3DoF": "true",
+            "Vis/MinInliers": "12",
             # "MaxObstacleHeight": "0.1",
 
             "Grid/Sensor": "0",

@@ -4,8 +4,6 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/project
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/appearances/protos/Parquetry.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/apartment_structure/protos/Wall.proto"
-EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/robots/robotis/turtlebot/protos/TurtleBot3Burger.proto"
-EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/robots/festo/robotino3/protos/Robotino3Webcam.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/apartment_structure/protos/Window.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/appearances/protos/Roughcast.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/apartment_structure/protos/Door.proto"
@@ -21,17 +19,15 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/project
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/apartment_structure/protos/DoorLever.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/factory/containers/protos/CardboardBox.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/plants/protos/PottedTree.proto"
-EXTERNPROTO "../protos/TurtleBot3Waffle.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/floors/protos/RectangleArena.proto"
-EXTERNPROTO "../protos/MyCreate.proto"
 EXTERNPROTO "../protos/MyCreate_kinect.proto"
 
 WorldInfo {
   basicTimeStep 16
 }
 Viewpoint {
-  orientation -0.5771969549958947 -0.5771969549958955 0.577656775505086 4.189249903239794
-  position 3.0042829372729964 15.850349345620677 8.095329170481886
+  orientation -0.553100029601546 -0.5586588704254329 0.6180458103973753 4.257722887306477
+  position 2.1539124175012954 16.33238941076097 13.608952543624481
   exposure 0.5
   follow "MyCreate_kinect"
 }
@@ -46,7 +42,6 @@ RectangleArena {
   floorSize 16 32
   floorTileSize 0.9 1.8
   floorAppearance Parquetry {
-    IBLStrength 1
   }
 }
 Solid {
@@ -943,7 +938,7 @@ Door {
   rotation 0 0 1 1.5708
   name "door 10"
   size 0.1 1 2.5
-  position -2
+  canBeOpen FALSE
   doorThickness 0.01
   frameSize 0.01 0.05 0.05
   doorAppearance GenericDoorAppearance {
@@ -1420,45 +1415,10 @@ CardboardBox {
   rotation 0 0 1 1.5708
   name "cardboard box(6)"
 }
-#TurtleBot3Burger {
-#  translation 3.5 14.5 0
-#  rotation 0 0 -1 -1.5701153071795861
-#  controller "<none>"
-#  extensionSlot [
-#    GPS {
-#    }
-#    InertialUnit {
-#      name "inertial"
-#      xAxis FALSE
-#      zAxis FALSE
-#    }
-#    Robotino3Webcam {
-#      translation -0.08 0 -0.34
-#      rotation 2.346409999987081e-06 2.346409999987081e-06 0.9999999999944944 1.5708
-#      name "camera"
-#      model "webcam"
-#    }
-#  ]
-#}
-#TurtleBot3Waffle {
-#  translation -0.049962 14.25 0
-#  rotation 0 0 1 3.14159
-#  camera_width 512
-#  camera_height 512
-#}
-#MyCreate {
-#  translation 3.3 16.5 0.044
-#  rotation 0 0 1 -1.58
-#  controller "<extern>"
-#  camera_width 360
-#  camera_height 280
-#}
 MyCreate_kinect {
   translation 3.3 16.5 0.044
   rotation 0 0 1 -1.58
   controller "<extern>"
   camera_width 360
   camera_height 280
-  #camera_rotation 0 1 0 0.261799  # 15 degree
-  #camera_rotation 0 1 0 0.174532  # 10 degree
 }

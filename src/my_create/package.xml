@@ -7,7 +7,7 @@
   <license>Apache-2.0</license>
 
   <!-- 構建工具依賴，必須放在頂層 -->
-  <buildtool_depend>ament_python</buildtool_depend>
+  <!-- <buildtool_depend>ament_python</buildtool_depend> -->
   
   <!-- 核心依賴 -->
   <depend>rclpy</depend>

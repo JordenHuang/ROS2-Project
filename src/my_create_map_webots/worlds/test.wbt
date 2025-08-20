@@ -1,16 +1,51 @@
-#VRML_SIM R2023b utf8
+#VRML_SIM R2025a utf8
+
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/backgrounds/protos/TexturedBackground.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/floors/protos/RectangleArena.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/apartment_structure/protos/Wall.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/solids/protos/SolidBox.proto"
+EXTERNPROTO "../protos/MyCreate_kinect.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/cabinet/protos/Cabinet.proto"
+
 WorldInfo {
 }
 Viewpoint {
-  orientation -0.5773 0.5773 0.5773 2.0944
-  position 0 0 10
+  orientation -0.5378875646954026 0.5432938199345995 0.6445997153016128 1.9873318384686285
+  position 0.24186267885693846 -2.185253821509738 10.888912931194751
 }
 TexturedBackground {
 }
 TexturedBackgroundLight {
 }
 RectangleArena {
+  floorSize 4 4
+  wallHeight 0.3
+}
+Wall {
+  translation -0.2 0.75 0
+  size 0.1 1 1
+}
+Wall {
+  translation 1.05 -0.75 0
+  name "wall(1)"
+  size 0.1 1 1
+}
+SolidBox {
+  translation 0.1 -0.9 0.1
+  size 0.2 0.2 0.2
+}
+SolidBox {
+  translation 0.6 0.15 0.1
+  name "box(1)"
+  size 0.2 0.2 0.2
+}
+Cabinet {
+  translation -1.99 1.6 0
+}
+MyCreate_kinect {
+  translation -1 0 0.05
+  controller "<extern>"
+  camera_width 360
+  camera_height 280
 }

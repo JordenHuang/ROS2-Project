@@ -13,10 +13,10 @@ import os
 def generate_launch_description():
     package_dir = get_package_share_directory('my_create_map_webots')
     nav2_params_file = os.path.join(package_dir, 'config', 'nav2_params.yaml')
-    explore_params_file = os.path.join(package_dir, 'config', 'explore.yaml')
-    explore_config = os.path.join(
-        get_package_share_directory("explore_lite"), "config", "params.yaml"
-    )
+    # explore_params_file = os.path.join(package_dir, 'config', 'explore.yaml')
+    # explore_config = os.path.join(
+    #     get_package_share_directory("explore_lite"), "config", "params.yaml"
+    # )
 
     # Directories
     pkg_nav2_bringup = get_package_share_directory(
@@ -27,6 +27,9 @@ def generate_launch_description():
     nav2_launch = PathJoinSubstitution(
         [pkg_nav2_bringup, 'launch', 'navigation_launch.py'])
 
+    explore_lite_launch = PathJoinSubstitution(
+        [FindPackageShare('explore_lite'), 'launch', 'explore.launch.py']
+    )
 
     # Includes
     nav2 = IncludeLaunchDescription(
@@ -37,22 +40,19 @@ def generate_launch_description():
         ]
     )
 
-    explore = Node(
-        package="explore_lite",
-        name="explore_node",
-        executable="explore",
-        parameters=[explore_config, {"use_sim_time": True}],
-        # parameters=[explore_params_file, {"use_sim_time": True}],
-        output="screen",
-        remappings=[("/tf", "tf"), ("/tf_static", "tf_static")],
+    explore_lite = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([explore_lite_launch]),
+        launch_arguments={
+            'use_sim_time': 'true',
+        }.items(),
     )
 
     return LaunchDescription([
         nav2,
         TimerAction(
-            period=2.0,
+            period=2.5,
             actions=[
-                explore,
+                explore_lite,
             ]
         ),
     ])

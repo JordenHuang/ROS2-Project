@@ -18,7 +18,10 @@ def generate_launch_description():
     robot_description_path = os.path.join(package_dir, 'resource', 'MyCreate_kinect.urdf')
     rviz_config_file = os.path.join(package_dir, 'config', 'rviz_config.rviz')
     # rviz_config_file = os.path.join(package_dir, 'config', 'rviz_config_ours.rviz')
-    world_path = os.path.join(package_dir, 'worlds', 'school-obstacle.wbt')
+
+    # world_path = os.path.join(package_dir, 'worlds', 'school-obstacle.wbt')
+    world_path = os.path.join(package_dir, 'worlds', 'school-2nd-floor.wbt')
+    # world_path = os.path.join(package_dir, 'worlds', 'test.wbt')
 
     webots = WebotsLauncher(
         world=world_path,
@@ -56,11 +59,30 @@ def generate_launch_description():
             'publish_tf': True,
             'approx_sync': True,
             'approx_sync_max_interval': 0.05,
+            "Vis/MinInliers": "12",
         }],
         remappings=[
             ('rgb/image', '/camera/image_raw'),
             ('rgb/camera_info', '/camera/camera_info'),
             ('depth/image', '/camera/depth/image_raw'),
+        ]
+    )
+
+    # ICP Odometry Node
+    icp_odometry_node = Node(
+        package='rtabmap_odom',
+        executable='icp_odometry',
+        name='icp_odometry',
+        output='screen',
+        parameters=[{
+            'use_sim_time': True,
+            'frame_id': 'base_link',
+            'publish_tf': True,
+            'approx_sync': True,
+            'approx_sync_max_interval': 0.05,
+        }],
+        remappings=[
+            ('scan', '/d2l/scan'),
         ]
     )
 
@@ -76,7 +98,7 @@ def generate_launch_description():
 # <param name="range_min"       type="double" value="0.45"/> <!--default:0.45m. Ranges less than this are considered -Inf. -->
 # <param name="range_max"       type="double" value="10.0"/> <!--default: 10m. Ranges less than this are considered +Inf. -->
 # <param name="output_frame_id" type="str"    value="camera_depth_frame"/> <!--default: camera_depth_frame. Frame id of the laser scan. -->
-            "range_max": 4.0,
+            "range_max": 3.5,
             "range_min": 0.01,
             "scan_height": 10,
             "use_sim_time": True,
@@ -108,11 +130,14 @@ def generate_launch_description():
             "RGBD/AngularUpdate": "0.01",
             "RGBD/LinearUpdate": "0.01",
             "RGBD/OptimizeFromGraphEnd": "false",
+# "RGBD/CreateOccupancyGrid": "true",
             "Reg/Force3DoF": "true",
             "Vis/MinInliers": "12",
             # "MaxObstacleHeight": "0.1",
 
             "Grid/Sensor": "0",
+            "Grid/Scan2dUnknownSpaceFilled": "true",
+"Grid/RayTracing": "true",
         }],
         remappings=[
             ('rgb/image', '/camera/image_raw'),
@@ -167,6 +192,7 @@ def generate_launch_description():
             actions=[
                 rtabmap_slam_node,
                 rgbd_odometry_node,
+                # icp_odometry_node,
                 depth_image_to_laserscan,
                 robot_state_publisher,
             ]

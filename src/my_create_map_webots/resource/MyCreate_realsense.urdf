@@ -1,0 +1,412 @@
+<?xml version="1.0"?>
+<robot name="/home/jordenhuang/ROS2-Project/src/my_create_map_webots/resource/MyCreate_realsense.urdf" xmlns:xacro="http://ros.org/wiki/xacro">
+  <webots>
+    <plugin type="my_create_map_webots.my_create_driver_realsense.MyCreateDriverRealsense"/>
+  </webots>
+
+  <link name="base_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.027 0.123 0.025"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.027 0.123 0.025"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="inertial unit">
+  </link>
+  <joint name="base_link_inertial unit_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="inertial unit"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+
+
+  <link name="solid">
+  </link>
+  <joint name="base_link_solid_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="solid"/>
+    <origin xyz="0.013 0 0" rpy="1.570798 -0.000002 1.570801"/>
+  </joint>
+
+  <link name="RealsenseD455_display">
+  </link>
+  <joint name="base_link_RealsenseD455_display_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="RealsenseD455_display"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+  <link name="RealsenseD455_receiver">
+  </link>
+  <joint name="base_link_RealsenseD455_receiver_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="RealsenseD455_receiver"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+  <link name="RealsenseD455_emitter">
+  </link>
+  <joint name="base_link_RealsenseD455_emitter_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="RealsenseD455_emitter"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+
+  <!-- <link name="RealsenseD455_rgb">
+  </link>
+  <joint name="base_link_RealsenseD455_rgb_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="RealsenseD455_rgb"/>
+    <origin xyz="0.005 0 0" rpy="-1.570796 0 -1.570796"/>
+  </joint>
+
+  <link name="RealsenseD455_depth">
+  </link>
+  <joint name="base_link_RealsenseD455_depth_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="RealsenseD455_depth"/>
+    <origin xyz="0.005 0 0" rpy="0 0 0"/>
+  </joint> -->
+
+
+  <!-- ======================= REALSENSE CAMERA ======================= -->
+  <!-- This is the physical body of the Realsense D455 camera -->
+  <link name="Realsense">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.084 0.027 0.068"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.084 0.027 0.068"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <!-- This joint mounts the camera body onto the robot's base link -->
+  <joint name="base_to_realsense_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="Realsense"/>
+    <!-- Position the camera 14cm forward and 10cm up from the base_link origin -->
+    <origin xyz="0.14 0 0.05" rpy="0 0 0"/>
+  </joint>
+
+  <link name="camera_rgb_frame">
+  </link>
+  <joint name="realsense_to_camera_rgb_joint" type="fixed">
+    <parent link="Realsense"/>
+    <child link="camera_rgb_frame"/>
+    <origin xyz="0.005 0 0" rpy="0 0 0"/>
+  </joint>
+
+  <!-- camera rgb optical frame -->
+  <link name="camera_rgb_optical_frame">
+  </link>
+  <joint name="camera_rgb_to_camera_rgb_optical_joint" type="fixed">
+    <parent link="camera_rgb_frame"/>
+    <child link="camera_rgb_optical_frame"/>
+    <origin xyz="0 0 0" rpy="-1.570796 0 -1.570796"/>
+  </joint>
+
+  <link name="camera_depth_frame">
+  </link>
+  <joint name="realsense_to_camera_depth_joint" type="fixed">
+    <parent link="Realsense"/>
+    <child link="camera_depth_frame"/>
+    <origin xyz="0.005 0 0" rpy="0 0 0"/>
+  </joint>
+
+  <!-- camera rgb optical frame -->
+  <link name="camera_depth_optical_frame">
+  </link>
+  <joint name="camera_depth_to_camera_depth_optical_joint" type="fixed">
+    <parent link="camera_depth_frame"/>
+    <child link="camera_depth_optical_frame"/>
+    <origin xyz="0 0 0" rpy="-1.570796 0 -1.570796"/>
+  </joint>
+  <!-- End camera thingy -->
+
+
+  <link name="stand_left_back_1">
+    <visual>
+      <geometry>
+        <cylinder radius="0.005" length="0.035"/>
+      </geometry>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder radius="0.005" length="0.035"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="base_link_stand_left_back_1_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="stand_left_back_1"/>
+    <origin xyz="-0.08 0.106 0.05" rpy="0 0 0"/>
+  </joint>
+  <link name="stand_left_front_1">
+    <visual>
+      <geometry>
+        <cylinder radius="0.005" length="0.035"/>
+      </geometry>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder radius="0.005" length="0.035"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="base_link_stand_left_front_1_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="stand_left_front_1"/>
+    <origin xyz="-0.01 0.116 0.05" rpy="0 0 0"/>
+  </joint>
+  <link name="stand_right_back_1">
+    <visual>
+      <geometry>
+        <cylinder radius="0.005" length="0.035"/>
+      </geometry>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder radius="0.005" length="0.035"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="base_link_stand_right_back_1_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="stand_right_back_1"/>
+    <origin xyz="-0.08 -0.106 0.05" rpy="0 0 0"/>
+  </joint>
+  <link name="stand_right_front_1">
+    <visual>
+      <geometry>
+        <cylinder radius="0.005" length="0.035"/>
+      </geometry>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder radius="0.005" length="0.035"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="base_link_stand_right_front_1_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="stand_right_front_1"/>
+    <origin xyz="-0.01 -0.12 0.05" rpy="0 0 0"/>
+  </joint>
+  <link name="plate_1">
+  </link>
+  <joint name="base_link_plate_1_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="plate_1"/>
+    <origin xyz="0 0 0.07" rpy="0 0 0"/>
+  </joint>
+  <link name="cliff_left">
+  </link>
+  <joint name="base_link_cliff_left_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="cliff_left"/>
+    <origin xyz="0.07 0.15 0" rpy="-1.876967 1.570787 1.264616"/>
+  </joint>
+  <link name="cliff_front_left">
+  </link>
+  <joint name="base_link_cliff_front_left_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="cliff_front_left"/>
+    <origin xyz="0.15 0.04 0" rpy="-1.876967 1.570787 1.264616"/>
+  </joint>
+  <link name="cliff_front_right">
+  </link>
+  <joint name="base_link_cliff_front_right_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="cliff_front_right"/>
+    <origin xyz="0.15 -0.04 0" rpy="-1.876967 1.570787 1.264616"/>
+  </joint>
+  <link name="cliff_right">
+  </link>
+  <joint name="base_link_cliff_right_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="cliff_right"/>
+    <origin xyz="0.07 -0.15 0" rpy="-1.876967 1.570787 1.264616"/>
+  </joint>
+  <link name="led_step">
+  </link>
+  <joint name="base_link_led_step_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="led_step"/>
+    <origin xyz="0.0189 -0.0581 0.0349" rpy="0 0 0"/>
+  </joint>
+  <link name="led_play">
+  </link>
+  <joint name="base_link_led_play_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="led_play"/>
+    <origin xyz="0.0193 -0.0132 0.0349" rpy="0 0 0"/>
+  </joint>
+  <link name="led_on">
+  </link>
+  <joint name="base_link_led_on_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="led_on"/>
+    <origin xyz="0.0202 0.0617 0.0349" rpy="0 0 0"/>
+  </joint>
+  <link name="bumper_right">
+    <visual>
+      <origin xyz="-0.078042 0 -0.148208" rpy="0 0.523599 0"/>
+      <geometry>
+        <box size="0.082811 0.07 0.01"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="-0.078042 0 -0.148208" rpy="0 0.523599 0"/>
+      <geometry>
+        <box size="0.082811 0.07 0.01"/>
+      </geometry>
+    </collision>
+    <visual>
+      <origin xyz="0 0 -0.1675" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.082811 0.07 0.01"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 -0.1675" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.082811 0.07 0.01"/>
+      </geometry>
+    </collision>
+    <visual>
+      <origin xyz="0.078042 0 -0.148208" rpy="0 -0.523599 0"/>
+      <geometry>
+        <box size="0.082811 0.07 0.01"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0.078042 0 -0.148208" rpy="0 -0.523599 0"/>
+      <geometry>
+        <box size="0.082811 0.07 0.01"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="base_link_bumper_right_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="bumper_right"/>
+    <origin xyz="0 0 0" rpy="1.570792 0.000011 -2.297729"/>
+  </joint>
+  <link name="bumper_left">
+    <visual>
+      <origin xyz="-0.078042 0 -0.148208" rpy="0 0.523599 0"/>
+      <geometry>
+        <box size="0.082811 0.07 0.01"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="-0.078042 0 -0.148208" rpy="0 0.523599 0"/>
+      <geometry>
+        <box size="0.082811 0.07 0.01"/>
+      </geometry>
+    </collision>
+    <visual>
+      <origin xyz="0 0 -0.1675" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.082811 0.07 0.01"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 -0.1675" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.082811 0.07 0.01"/>
+      </geometry>
+    </collision>
+    <visual>
+      <origin xyz="0.078042 0 -0.148208" rpy="0 -0.523599 0"/>
+      <geometry>
+        <box size="0.082811 0.07 0.01"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0.078042 0 -0.148208" rpy="0 -0.523599 0"/>
+      <geometry>
+        <box size="0.082811 0.07 0.01"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="base_link_bumper_left_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="bumper_left"/>
+    <origin xyz="0 0 0" rpy="1.570806 0.000006 -0.843867"/>
+  </joint>
+  <link name="receiver">
+  </link>
+  <joint name="base_link_receiver_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="receiver"/>
+    <origin xyz="0.152 0 0.037" rpy="0 0 0"/>
+  </joint>
+  <link name="front wheel">
+  </link>
+  <joint name="base_link_front wheel_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="front wheel"/>
+    <origin xyz="0.129 0 -0.035" rpy="0 0 0"/>
+  </joint>
+  <link name="rear wheel">
+  </link>
+  <joint name="base_link_rear wheel_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="rear wheel"/>
+    <origin xyz="-0.1315 0 -0.0305" rpy="0 0 0"/>
+  </joint>
+  <joint name="left wheel motor" type="continuous">
+    <parent link="base_link"/>
+    <child link="left wheel"/>
+    <axis xyz="0 1 0"/>
+    <limit effort="10" velocity="16.129"/>
+    <origin xyz="-0.0062 0 -0.014" rpy="0 0 0"/>
+  </joint>
+  <link name="left wheel">
+    <visual>
+      <origin xyz="0 0.1359 0" rpy="1.5708 0 0"/>
+      <geometry>
+        <cylinder radius="0.031" length="0.026"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0.1359 0" rpy="1.5708 0 0"/>
+      <geometry>
+        <cylinder radius="0.031" length="0.026"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="right wheel motor" type="continuous">
+    <parent link="base_link"/>
+    <child link="right wheel"/>
+    <axis xyz="0 1 0"/>
+    <limit effort="10" velocity="16.129"/>
+    <origin xyz="-0.0062 0.1359 -0.014" rpy="0 0 0"/>
+  </joint>
+  <link name="right wheel">
+    <visual>
+      <origin xyz="0 -0.1359 0" rpy="1.5708 0 0"/>
+      <geometry>
+        <cylinder radius="0.031" length="0.026"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 -0.1359 0" rpy="1.5708 0 0"/>
+      <geometry>
+        <cylinder radius="0.031" length="0.026"/>
+      </geometry>
+    </collision>
+  </link>
+</robot>

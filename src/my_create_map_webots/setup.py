@@ -33,6 +33,9 @@ setup(
         # PROTO (create_textures)
         (f'share/{package_name}/protos/create_textures', glob('protos/create_textures/*')),
 
+        # PROTO (Realsense_meshes)
+        (f'share/{package_name}/protos/Realsense_meshes', glob('protos/Realsense_meshes/*')),
+
         (f'share/{package_name}/textures/SofaLeather', glob('textures/SofaLeather/*')),
         (f'share/{package_name}/textures/WoodFloor', glob('textures/WoodFloor/*')),
 

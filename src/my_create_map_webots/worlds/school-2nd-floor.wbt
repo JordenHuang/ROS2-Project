@@ -20,6 +20,7 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/project
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/factory/containers/protos/CardboardBox.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/plants/protos/PottedTree.proto"
 EXTERNPROTO "../protos/MyCreate_kinect.proto"
+EXTERNPROTO "../protos/MyCreate_realsense.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/floors/protos/Floor.proto"
 
 WorldInfo {
@@ -1775,7 +1776,28 @@ CardboardBox {
   rotation 0 0 1 1.5708
   name "cardboard box(6)"
 }
-MyCreate_kinect {
+# MyCreate_kinect {
+#   ## Empty room
+#   # translation -1.55064 16.4355 0.044
+#   # rotation 0 0 1 -1.58
+#   ## Table only
+#   # translation 5.35397 8.20068 0.044
+#   # rotation 0 0 1 -1.5800053071795865
+#   ## Table and Chair
+#   # translation 5.67052 -3.04286 0.044
+#   # rotation 0 0 1 -1.58
+#   ## On the hallway
+#   # translation 7.67052 -3.04286 0.044
+#   # rotation 0 0 1 1.58
+#   ## Meeting room
+#   translation 3.31231 16.6521 0.00198029
+#   rotation 0 0 1 -1.53
+#   ##
+#   controller "<extern>"
+#   camera_width 360
+#   camera_height 280
+# }
+MyCreate_realsense {
   ## Empty room
   # translation -1.55064 16.4355 0.044
   # rotation 0 0 1 -1.58
@@ -1793,6 +1815,7 @@ MyCreate_kinect {
   rotation 0 0 1 -1.53
   ##
   controller "<extern>"
+#   camera_resolution "VGA"
   camera_width 360
   camera_height 280
 }

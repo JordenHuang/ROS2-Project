@@ -21,6 +21,7 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/project
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/plants/protos/PottedTree.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/floors/protos/RectangleArena.proto"
 EXTERNPROTO "../protos/MyCreate_kinect.proto"
+EXTERNPROTO "../protos/MyCreate_realsense.proto"
 
 WorldInfo {
   basicTimeStep 16
@@ -1415,10 +1416,18 @@ CardboardBox {
   rotation 0 0 1 1.5708
   name "cardboard box(6)"
 }
-MyCreate_kinect {
+# MyCreate_kinect {
+#   translation 3.3 16.5 0.044
+#   rotation 0 0 1 -1.58
+#   controller "<extern>"
+#   camera_width 360
+#   camera_height 280
+# }
+MyCreate_realsense {
   translation 3.3 16.5 0.044
   rotation 0 0 1 -1.58
   controller "<extern>"
+#   camera_resolution "VGA"
   camera_width 360
   camera_height 280
 }

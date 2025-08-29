@@ -6,6 +6,7 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/project
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/apartment_structure/protos/Wall.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/solids/protos/SolidBox.proto"
 EXTERNPROTO "../protos/MyCreate_kinect.proto"
+EXTERNPROTO "../protos/MyCreate_realsense.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/cabinet/protos/Cabinet.proto"
 
 WorldInfo {
@@ -43,9 +44,16 @@ SolidBox {
 Cabinet {
   translation -1.99 1.6 0
 }
-MyCreate_kinect {
+# MyCreate_kinect {
+#   translation -1 0 0.05
+#   controller "<extern>"
+#   camera_width 360
+#   camera_height 280
+# }
+MyCreate_realsense {
   translation -1 0 0.05
   controller "<extern>"
+#   camera_resolution "VGA"
   camera_width 360
   camera_height 280
 }

@@ -59,12 +59,18 @@ def generate_launch_description():
             'publish_tf': True,
             'approx_sync': True,
             'approx_sync_max_interval': 0.05,
+            "Reg/Force3DoF": "true",
             "Vis/MinInliers": "12",
+            'wait_imu_to_init': False, # 因為我們沒有有效的初始方向，所以關閉這個
+
+            # [重要] 告訴 RTAB-Map IMU 的方向數據是無效的，但其他數據是有效的
+            'Odom/GuessMotion': 'true',
         }],
         remappings=[
             ('rgb/image', '/camera/image_raw'),
             ('rgb/camera_info', '/camera/camera_info'),
             ('depth/image', '/camera/depth/image_raw'),
+            ('imu', '/imu/data'),
         ]
     )
 
@@ -98,7 +104,7 @@ def generate_launch_description():
 # <param name="range_min"       type="double" value="0.45"/> <!--default:0.45m. Ranges less than this are considered -Inf. -->
 # <param name="range_max"       type="double" value="10.0"/> <!--default: 10m. Ranges less than this are considered +Inf. -->
 # <param name="output_frame_id" type="str"    value="camera_depth_frame"/> <!--default: camera_depth_frame. Frame id of the laser scan. -->
-            "range_max": 3.5,
+            "range_max": 6.0,
             "range_min": 0.01,
             "scan_height": 10,
             "use_sim_time": True,
@@ -144,6 +150,7 @@ def generate_launch_description():
             ('rgb/camera_info', '/camera/camera_info'),
             ('depth/image', '/camera/depth/image_raw'),
             ('scan', '/d2l/scan'),
+            ('imu', '/imu/data'),
             # ('rgb/image', '/camera/image_rect_color'),
             # ('rgb/camera_info', '/left/camera_info'),
             # # ('depth/image', '/pointcloud2depthImage/image'),

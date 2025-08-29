@@ -7,6 +7,9 @@ centralWidgetVisible: 1
 orthographicViewHeight: 1
 textFiles: -1
 consoles: Console:All:All
-renderingDevicePerspectives: MyCreate_realsense:IntelRealsenseD455:IntelRealsenseD455_depth;0;1;0;0
-renderingDevicePerspectives: MyCreate_realsense:IntelRealsenseD455:IntelRealsenseD455_display;0;1;0;0
-renderingDevicePerspectives: MyCreate_realsense:IntelRealsenseD455:IntelRealsenseD455_rgb;0;1;0;0
+renderingDevicePerspectives: MyCreate_realsense(1):RealsenseD455_depth;1;1;0;0
+renderingDevicePerspectives: MyCreate_realsense(1):RealsenseD455_display;1;1;0;0
+renderingDevicePerspectives: MyCreate_realsense(1):RealsenseD455_rgb;1;1;0;0
+renderingDevicePerspectives: MyCreate_realsense:RealsenseD455_depth;1;1;0;0
+renderingDevicePerspectives: MyCreate_realsense:RealsenseD455_display;1;1;0;0
+renderingDevicePerspectives: MyCreate_realsense:RealsenseD455_rgb;1;1;0;0

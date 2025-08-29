@@ -16,7 +16,7 @@ from rclpy.qos import QoSProfile, QoSReliabilityPolicy, QoSHistoryPolicy
 from rclpy.qos import qos_profile_sensor_data
 from geometry_msgs.msg import Twist
 from rosgraph_msgs.msg import Clock
-from sensor_msgs.msg import Image, CameraInfo
+from sensor_msgs.msg import Image, CameraInfo, Imu
 import cv2
 from cv_bridge import CvBridge, CvBridgeError
 
@@ -67,8 +67,12 @@ class MyCreateDriverRealsense:
         self.camHeight = self.camera.getHeight()
         self.camFov = self.camera.getFov()
 
-        self.inertial_unit = self._robot.getDevice("inertial unit")
-        self.inertial_unit.enable(self._TIMESTEP)
+        self.imu_accelerometer = self._robot.getDevice("MPU-9250 accelerometer")
+        self.imu_accelerometer.enable(self._TIMESTEP)
+        self.imu_gyro = self._robot.getDevice("MPU-9250 gyro")
+        self.imu_gyro.enable(self._TIMESTEP)
+        self.imu_compass = self._robot.getDevice("MPU-9250 compass")
+        self.imu_compass.enable(self._TIMESTEP)
 
         self.__target_twist = Twist()
 
@@ -86,6 +90,7 @@ class MyCreateDriverRealsense:
         self.camInfoPub = self.node.create_publisher(CameraInfo, "/camera/camera_info", reliable_qos_profile)
         self.camDepthPub = self.node.create_publisher(Image, "/camera/depth/image_raw", reliable_qos_profile)
         self.depthCamInfoPub = self.node.create_publisher(CameraInfo, "/camera/depth/camera_info", reliable_qos_profile)
+        self.imu_pub = self.node.create_publisher(Imu, "/imu/data", reliable_qos_profile)
 
         # Subscriber
         self.node.create_subscription(Twist, 'cmd_vel', self.__cmd_vel_callback, 1)
@@ -208,6 +213,47 @@ class MyCreateDriverRealsense:
 
         # --- Publish ---
         self.depthCamInfoPub.publish(depthCamInfoMsg)
+
+        # === Publish IMU data ===
+        imu_msg = Imu()
+        imu_msg.header.stamp = now
+        imu_msg.header.frame_id = "imu_link"
+
+        # --- 獲取線性加速度 ---
+        linear_accel = self.imu_accelerometer.getValues()
+        imu_msg.linear_acceleration.x = linear_accel[0]
+        imu_msg.linear_acceleration.y = linear_accel[1]
+        imu_msg.linear_acceleration.z = linear_accel[2]
+
+        # --- 獲取角速度 ---
+        angular_vel = self.imu_gyro.getValues()
+        imu_msg.angular_velocity.x = angular_vel[0]
+        imu_msg.angular_velocity.y = angular_vel[1]
+        imu_msg.angular_velocity.z = angular_vel[2]
+
+        # --- 處理方向 ---
+        # 由於我們沒有直接的方向輸出，我們需要告訴下游節點「方向數據是無效的」。
+        # 標準的做法是將四元數設為 (0,0,0,1)，並將協方差矩陣的第一個元素設為 -1。
+        imu_msg.orientation.x = 0.0
+        imu_msg.orientation.y = 0.0
+        imu_msg.orientation.z = 0.0
+        imu_msg.orientation.w = 1.0
+        # [關鍵] orientation_covariance[0] = -1 代表「請忽略方向數據」
+        imu_msg.orientation_covariance[0] = -1.0 
+
+        # --- 填充其他協方差 ---
+        # 我們提供一個很小的、非零的對角協方差，代表角速度和加速度數據是「可信的」。
+        small_covariance = 0.01 
+        imu_msg.angular_velocity_covariance[0] = small_covariance
+        imu_msg.angular_velocity_covariance[4] = small_covariance
+        imu_msg.angular_velocity_covariance[8] = small_covariance
+
+        imu_msg.linear_acceleration_covariance[0] = small_covariance
+        imu_msg.linear_acceleration_covariance[4] = small_covariance
+        imu_msg.linear_acceleration_covariance[8] = small_covariance
+
+        # --- Publish ---
+        self.imu_pub.publish(imu_msg)
 
         rclpy.spin_once(self.node, timeout_sec=0)
 

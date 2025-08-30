@@ -47,6 +47,20 @@ def generate_launch_description():
         }]
     )
 
+    imu_filter = Node(
+        package='imu_filter_madgwick',
+        executable='imu_filter_madgwick_node',
+        name='imu_filter',
+        output='screen',
+        parameters=[{
+            'publish_tf': False,
+        }],
+        remappings=[
+            ('/imu/data_raw', 'imu/data_without_mag'),
+            ('imu/mag', '/imu/mag'),
+        ]
+    )
+
     # rgbd Odometry Node
     rgbd_odometry_node = Node(
         package='rtabmap_odom',
@@ -61,10 +75,7 @@ def generate_launch_description():
             'approx_sync_max_interval': 0.05,
             "Reg/Force3DoF": "true",
             "Vis/MinInliers": "12",
-            'wait_imu_to_init': False, # 因為我們沒有有效的初始方向，所以關閉這個
-
-            # [重要] 告訴 RTAB-Map IMU 的方向數據是無效的，但其他數據是有效的
-            'Odom/GuessMotion': 'true',
+            'wait_imu_to_init': True, # 因為我們沒有有效的初始方向，所以關閉這個
         }],
         remappings=[
             ('rgb/image', '/camera/image_raw'),
@@ -104,7 +115,7 @@ def generate_launch_description():
 # <param name="range_min"       type="double" value="0.45"/> <!--default:0.45m. Ranges less than this are considered -Inf. -->
 # <param name="range_max"       type="double" value="10.0"/> <!--default: 10m. Ranges less than this are considered +Inf. -->
 # <param name="output_frame_id" type="str"    value="camera_depth_frame"/> <!--default: camera_depth_frame. Frame id of the laser scan. -->
-            "range_max": 6.0,
+            "range_max": 4.0,
             "range_min": 0.01,
             "scan_height": 10,
             "use_sim_time": True,
@@ -136,21 +147,21 @@ def generate_launch_description():
             "RGBD/AngularUpdate": "0.01",
             "RGBD/LinearUpdate": "0.01",
             "RGBD/OptimizeFromGraphEnd": "false",
-# "RGBD/CreateOccupancyGrid": "true",
+"RGBD/CreateOccupancyGrid": "true",
             "Reg/Force3DoF": "true",
             "Vis/MinInliers": "12",
             # "MaxObstacleHeight": "0.1",
 
             "Grid/Sensor": "0",
             "Grid/Scan2dUnknownSpaceFilled": "true",
-"Grid/RayTracing": "true",
+# "Grid/RayTracing": "true",
         }],
         remappings=[
             ('rgb/image', '/camera/image_raw'),
             ('rgb/camera_info', '/camera/camera_info'),
             ('depth/image', '/camera/depth/image_raw'),
             ('scan', '/d2l/scan'),
-            ('imu', '/imu/data'),
+            # ('imu', '/imu/data'),
             # ('rgb/image', '/camera/image_rect_color'),
             # ('rgb/camera_info', '/left/camera_info'),
             # # ('depth/image', '/pointcloud2depthImage/image'),
@@ -193,6 +204,7 @@ def generate_launch_description():
         my_robot_driver,
         # rtabmap_viz,
         rviz2,
+        imu_filter,
 
         TimerAction(
             period=2.0,

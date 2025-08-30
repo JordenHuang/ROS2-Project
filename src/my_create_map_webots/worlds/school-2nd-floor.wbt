@@ -1799,14 +1799,14 @@ CardboardBox {
 # }
 MyCreate_realsense {
   ## Empty room
-  translation -1.55064 16.4355 0.044
-  rotation 0 0 1 -1.58
+  # translation -1.55064 16.4355 0.044
+  # rotation 0 0 1 -1.58
   ## Table only
   # translation 5.35397 8.20068 0.044
   # rotation 0 0 1 -1.5800053071795865
   ## Table and Chair
-  # translation 5.67052 -3.04286 0.044
-  # rotation 0 0 1 -1.58
+  translation 5.67052 -3.04286 0.044
+  rotation 0 0 1 -1.58
   ## On the hallway
   # translation 7.67052 -3.04286 0.044
   # rotation 0 0 1 1.58

@@ -24,7 +24,7 @@ PROTO MyCreate_realsense [
   field SFInt32    camera_height        480             # Is `Kinect.height`.
   field SFVec3f    camera_translation   0.15 0 0.05          # Is `RealsenseD455.translation`.
   field SFRotation camera_rotation      0 1 0 0              # Is `RealsenseD455.rotation`.
-  field SFFloat    camera_maxRange      6                    # Is `RealsenseD455.maxRange`.
+  field SFFloat    camera_maxRange      4                    # Is `RealsenseD455.maxRange`.
   # field SFFloat    camera_fieldOfView   1.4746               # Diagonal ~84.43° from inr parametrs
   field SFFloat    camera_fieldOfView   1.0               # Diagonal ~84.43° from inr parametrs
   field MFNode     arm_slot             []                   # Put the arm here

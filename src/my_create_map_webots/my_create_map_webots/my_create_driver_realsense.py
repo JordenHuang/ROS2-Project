@@ -16,7 +16,7 @@ from rclpy.qos import QoSProfile, QoSReliabilityPolicy, QoSHistoryPolicy
 from rclpy.qos import qos_profile_sensor_data
 from geometry_msgs.msg import Twist
 from rosgraph_msgs.msg import Clock
-from sensor_msgs.msg import Image, CameraInfo, Imu
+from sensor_msgs.msg import Image, CameraInfo, Imu, MagneticField
 import cv2
 from cv_bridge import CvBridge, CvBridgeError
 
@@ -90,7 +90,8 @@ class MyCreateDriverRealsense:
         self.camInfoPub = self.node.create_publisher(CameraInfo, "/camera/camera_info", reliable_qos_profile)
         self.camDepthPub = self.node.create_publisher(Image, "/camera/depth/image_raw", reliable_qos_profile)
         self.depthCamInfoPub = self.node.create_publisher(CameraInfo, "/camera/depth/camera_info", reliable_qos_profile)
-        self.imu_pub = self.node.create_publisher(Imu, "/imu/data", reliable_qos_profile)
+        self.imu_pub = self.node.create_publisher(Imu, "/imu/data_without_mag", reliable_qos_profile)
+        self.mag_pub = self.node.create_publisher(MagneticField, "/imu/mag", reliable_qos_profile)
 
         # Subscriber
         self.node.create_subscription(Twist, 'cmd_vel', self.__cmd_vel_callback, 1)
@@ -128,8 +129,8 @@ class MyCreateDriverRealsense:
             forward_speed = self.__target_twist.linear.x
             angular_speed = self.__target_twist.angular.z
 
-            command_motor_left = (forward_speed - angular_speed * AXLE_LENGTH/2) / WHEEL_RADIUS / 2.5
-            command_motor_right = (forward_speed + angular_speed * AXLE_LENGTH/2) / WHEEL_RADIUS / 2.5
+            command_motor_left = (forward_speed - angular_speed * AXLE_LENGTH/2) / WHEEL_RADIUS / 3.5
+            command_motor_right = (forward_speed + angular_speed * AXLE_LENGTH/2) / WHEEL_RADIUS / 3.5
             self._left_motor.setVelocity(command_motor_left)
             self._right_motor.setVelocity(command_motor_right)
 
@@ -254,6 +255,24 @@ class MyCreateDriverRealsense:
 
         # --- Publish ---
         self.imu_pub.publish(imu_msg)
+
+        # --- 4. 發佈磁力計訊息 ---
+        mag_msg = MagneticField()
+        mag_msg.header.stamp = now
+        mag_msg.header.frame_id = "imu_link"
+
+        # Webots 的 Compass 提供 x, y, z 方向的磁場強度 (單位: Tesla)
+        mag_values = self.imu_compass.getValues()
+        mag_msg.magnetic_field.x = mag_values[0]
+        mag_msg.magnetic_field.y = mag_values[1]
+        mag_msg.magnetic_field.z = mag_values[2]
+
+        # 填充磁力計的協方差
+        mag_msg.magnetic_field_covariance[0] = small_covariance
+        mag_msg.magnetic_field_covariance[4] = small_covariance
+        mag_msg.magnetic_field_covariance[8] = small_covariance
+
+        self.mag_pub.publish(mag_msg)
 
         rclpy.spin_once(self.node, timeout_sec=0)
 

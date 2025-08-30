@@ -19,8 +19,7 @@ def generate_launch_description():
     # )
 
     # Directories
-    pkg_nav2_bringup = get_package_share_directory(
-        'nav2_bringup')
+    pkg_nav2_bringup = get_package_share_directory('nav2_bringup')
 
     # Paths
     # Our launch file has the same name as the nav2_bringup one
@@ -49,10 +48,10 @@ def generate_launch_description():
 
     return LaunchDescription([
         nav2,
-        TimerAction(
-            period=2.5,
-            actions=[
-                explore_lite,
-            ]
-        ),
+        # TimerAction(
+        #     period=2.5,
+        #     actions=[
+        #         explore_lite,
+        #     ]
+        # ),
     ])

@@ -29,16 +29,11 @@ from controller import Supervisor
 # LINEAR_SPEED_BACKWARD = 0.15
 # ANGULAR_SPEED = 1.0
 
-WHEEL_RADIUS       = 0.031
-AXLE_LENGTH        = 0.271756 # 0.235
-
-
 class MyCreateDriverRealsense:
     def init(self, webots_node, properties):
         """
         Initializes the robot driver plugin.
         """
-
         # We still need the webots_node to get the robot instance
         self._robot = webots_node.robot
 
@@ -49,12 +44,17 @@ class MyCreateDriverRealsense:
         self._keyboard  = self._robot.getKeyboard()
         self._keyboard.enable(self._TIMESTEP)
 
+        # Wheel related parameters
+        self.WHEEL_RADIUS = 0.031
+        self.AXLE_LENGTH = 0.271756
+        self.v_left_rad_s = 0.0
+        self.v_right_rad_s = 0.0
         self._left_motor = self._robot.getDevice("left wheel motor")
         self._right_motor = self._robot.getDevice("right wheel motor")
         self._left_motor.setPosition(float('+inf'));
         self._right_motor.setPosition(float('+inf'));
-        self._left_motor.setVelocity(0.0)
-        self._right_motor.setVelocity(0.0)
+        self._left_motor.setVelocity(self.v_left_rad_s)
+        self._right_motor.setVelocity(self.v_right_rad_s)
 
         self._counter = 100
 
@@ -105,6 +105,23 @@ class MyCreateDriverRealsense:
 
     def __cmd_vel_callback(self, twist):
         self.__target_twist = twist
+        self.update_wheel_speed()
+
+    def update_wheel_speed(self):
+        # 從 Twist 訊息中提取線速度和角速度
+        forward_speed = self.__target_twist.linear.x
+        angular_speed = self.__target_twist.angular.z
+
+        # --- 運動學逆解計算 ---
+        # 1. 計算左右輪各自需要的「線速度」(m/s)
+        v_left_m_s = forward_speed - (angular_speed * self.AXLE_LENGTH / 2.0)
+        v_right_m_s = forward_speed + (angular_speed * self.AXLE_LENGTH / 2.0)
+
+        # 2. 將線速度轉換為馬達需要的「角速度」(rad/s)
+        #    請務必確認 Webots 馬達 setVelocity() 函數所接受的單位！
+        #    如果它接受 rad/s (最常見的情況)，則使用下面的公式。
+        self.v_left_rad_s = v_left_m_s / self.WHEEL_RADIUS
+        self.v_right_rad_s = v_right_m_s / self.WHEEL_RADIUS
 
     def step(self):
         self._counter += 1
@@ -126,13 +143,15 @@ class MyCreateDriverRealsense:
             self._left_motor.setVelocity(vel)
             self._right_motor.setVelocity(-vel)
         else:
-            forward_speed = self.__target_twist.linear.x
-            angular_speed = self.__target_twist.angular.z
+            self._left_motor.setVelocity(self.v_left_rad_s)
+            self._right_motor.setVelocity(self.v_right_rad_s)
+            # forward_speed = self.__target_twist.linear.x
+            # angular_speed = self.__target_twist.angular.z
 
-            command_motor_left = (forward_speed - angular_speed * AXLE_LENGTH/2) / WHEEL_RADIUS / 3.5
-            command_motor_right = (forward_speed + angular_speed * AXLE_LENGTH/2) / WHEEL_RADIUS / 3.5
-            self._left_motor.setVelocity(command_motor_left)
-            self._right_motor.setVelocity(command_motor_right)
+            # command_motor_left = (forward_speed - angular_speed * AXLE_LENGTH/2) / WHEEL_RADIUS / 3.5
+            # command_motor_right = (forward_speed + angular_speed * AXLE_LENGTH/2) / WHEEL_RADIUS / 3.5
+            # self._left_motor.setVelocity(command_motor_left)
+            # self._right_motor.setVelocity(command_motor_right)
 
             # self._left_motor.setVelocity(0.0)
             # self._right_motor.setVelocity(0.0)
@@ -144,6 +163,65 @@ class MyCreateDriverRealsense:
         shape = (self.camHeight, self.camWidth, 4)
         now = Time(seconds=self._robot.getTime()).to_msg()
         # self.node.get_logger().info(f"time: {now}")
+
+        # === Publish IMU data ===
+        imu_msg = Imu()
+        imu_msg.header.stamp = now
+        imu_msg.header.frame_id = "imu_link"
+
+        # --- 獲取線性加速度 ---
+        linear_accel = self.imu_accelerometer.getValues()
+        imu_msg.linear_acceleration.x = linear_accel[0]
+        imu_msg.linear_acceleration.y = linear_accel[1]
+        imu_msg.linear_acceleration.z = linear_accel[2]
+
+        # --- 獲取角速度 ---
+        angular_vel = self.imu_gyro.getValues()
+        imu_msg.angular_velocity.x = angular_vel[0]
+        imu_msg.angular_velocity.y = angular_vel[1]
+        imu_msg.angular_velocity.z = angular_vel[2]
+
+        # --- 處理方向 ---
+        # 由於我們沒有直接的方向輸出，我們需要告訴下游節點「方向數據是無效的」。
+        # 標準的做法是將四元數設為 (0,0,0,1)，並將協方差矩陣的第一個元素設為 -1。
+        imu_msg.orientation.x = 0.0
+        imu_msg.orientation.y = 0.0
+        imu_msg.orientation.z = 0.0
+        imu_msg.orientation.w = 1.0
+        # [關鍵] orientation_covariance[0] = -1 代表「請忽略方向數據」
+        imu_msg.orientation_covariance[0] = -1.0
+
+        # --- 填充其他協方差 ---
+        # 我們提供一個很小的、非零的對角協方差，代表角速度和加速度數據是「可信的」。
+        small_covariance = 0.01
+        imu_msg.angular_velocity_covariance[0] = small_covariance
+        imu_msg.angular_velocity_covariance[4] = small_covariance
+        imu_msg.angular_velocity_covariance[8] = small_covariance
+
+        imu_msg.linear_acceleration_covariance[0] = small_covariance
+        imu_msg.linear_acceleration_covariance[4] = small_covariance
+        imu_msg.linear_acceleration_covariance[8] = small_covariance
+
+        # --- Publish ---
+        self.imu_pub.publish(imu_msg)
+
+        # --- 4. 發佈磁力計訊息 ---
+        mag_msg = MagneticField()
+        mag_msg.header.stamp = now
+        mag_msg.header.frame_id = "imu_link"
+
+        # Webots 的 Compass 提供 x, y, z 方向的磁場強度 (單位: Tesla)
+        mag_values = self.imu_compass.getValues()
+        mag_msg.magnetic_field.x = mag_values[0]
+        mag_msg.magnetic_field.y = mag_values[1]
+        mag_msg.magnetic_field.z = mag_values[2]
+
+        # 填充磁力計的協方差
+        mag_msg.magnetic_field_covariance[0] = small_covariance
+        mag_msg.magnetic_field_covariance[4] = small_covariance
+        mag_msg.magnetic_field_covariance[8] = small_covariance
+
+        self.mag_pub.publish(mag_msg)
 
         # === Publish camera image ===
         # Get image from both camera
@@ -214,65 +292,6 @@ class MyCreateDriverRealsense:
 
         # --- Publish ---
         self.depthCamInfoPub.publish(depthCamInfoMsg)
-
-        # === Publish IMU data ===
-        imu_msg = Imu()
-        imu_msg.header.stamp = now
-        imu_msg.header.frame_id = "imu_link"
-
-        # --- 獲取線性加速度 ---
-        linear_accel = self.imu_accelerometer.getValues()
-        imu_msg.linear_acceleration.x = linear_accel[0]
-        imu_msg.linear_acceleration.y = linear_accel[1]
-        imu_msg.linear_acceleration.z = linear_accel[2]
-
-        # --- 獲取角速度 ---
-        angular_vel = self.imu_gyro.getValues()
-        imu_msg.angular_velocity.x = angular_vel[0]
-        imu_msg.angular_velocity.y = angular_vel[1]
-        imu_msg.angular_velocity.z = angular_vel[2]
-
-        # --- 處理方向 ---
-        # 由於我們沒有直接的方向輸出，我們需要告訴下游節點「方向數據是無效的」。
-        # 標準的做法是將四元數設為 (0,0,0,1)，並將協方差矩陣的第一個元素設為 -1。
-        imu_msg.orientation.x = 0.0
-        imu_msg.orientation.y = 0.0
-        imu_msg.orientation.z = 0.0
-        imu_msg.orientation.w = 1.0
-        # [關鍵] orientation_covariance[0] = -1 代表「請忽略方向數據」
-        imu_msg.orientation_covariance[0] = -1.0 
-
-        # --- 填充其他協方差 ---
-        # 我們提供一個很小的、非零的對角協方差，代表角速度和加速度數據是「可信的」。
-        small_covariance = 0.01 
-        imu_msg.angular_velocity_covariance[0] = small_covariance
-        imu_msg.angular_velocity_covariance[4] = small_covariance
-        imu_msg.angular_velocity_covariance[8] = small_covariance
-
-        imu_msg.linear_acceleration_covariance[0] = small_covariance
-        imu_msg.linear_acceleration_covariance[4] = small_covariance
-        imu_msg.linear_acceleration_covariance[8] = small_covariance
-
-        # --- Publish ---
-        self.imu_pub.publish(imu_msg)
-
-        # --- 4. 發佈磁力計訊息 ---
-        mag_msg = MagneticField()
-        mag_msg.header.stamp = now
-        mag_msg.header.frame_id = "imu_link"
-
-        # Webots 的 Compass 提供 x, y, z 方向的磁場強度 (單位: Tesla)
-        mag_values = self.imu_compass.getValues()
-        mag_msg.magnetic_field.x = mag_values[0]
-        mag_msg.magnetic_field.y = mag_values[1]
-        mag_msg.magnetic_field.z = mag_values[2]
-
-        # 填充磁力計的協方差
-        mag_msg.magnetic_field_covariance[0] = small_covariance
-        mag_msg.magnetic_field_covariance[4] = small_covariance
-        mag_msg.magnetic_field_covariance[8] = small_covariance
-
-        self.mag_pub.publish(mag_msg)
 
         rclpy.spin_once(self.node, timeout_sec=0)
 

@@ -23,12 +23,41 @@
   <!-- IMU link -->
   <link name="imu_link">
   </link>
-  <joint name="base_link_to_imu_link_joint" type="fixed">
-    <parent link="base_link"/>
+  <joint name="MPU9250_to_imu_link_joint" type="fixed">
+    <parent link="MPU-9250"/>
     <child link="imu_link"/>
     <origin xyz="0 0 0" rpy="0 0 0"/>
   </joint>
 
+  <link name="MPU-9250">
+  </link>
+  <joint name="base_link_MPU-9250_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="MPU-9250"/>
+    <origin xyz="0.15 0 0.05" rpy="0 0 0"/>
+  </joint>
+
+  <link name="MPU-9250 compass">
+  </link>
+  <joint name="MPU-9250_MPU-9250 compass_joint" type="fixed">
+    <parent link="MPU-9250"/>
+    <child link="MPU-9250 compass"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+  <link name="MPU-9250 gyro">
+  </link>
+  <joint name="MPU-9250_MPU-9250 gyro_joint" type="fixed">
+    <parent link="MPU-9250"/>
+    <child link="MPU-9250 gyro"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+  <link name="MPU-9250 accelerometer">
+  </link>
+  <joint name="MPU-9250_MPU-9250 accelerometer_joint" type="fixed">
+    <parent link="MPU-9250"/>
+    <child link="MPU-9250 accelerometer"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
 
   <link name="solid">
   </link>

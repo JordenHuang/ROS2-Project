@@ -20,8 +20,8 @@ def generate_launch_description():
     # rviz_config_file = os.path.join(package_dir, 'config', 'rviz_config_ours.rviz')
 
     # world_path = os.path.join(package_dir, 'worlds', 'school-obstacle.wbt')
-    world_path = os.path.join(package_dir, 'worlds', 'school-2nd-floor.wbt')
-    # world_path = os.path.join(package_dir, 'worlds', 'test.wbt')
+    # world_path = os.path.join(package_dir, 'worlds', 'school-2nd-floor.wbt')
+    world_path = os.path.join(package_dir, 'worlds', 'test.wbt')
 
     webots = WebotsLauncher(
         world=world_path,
@@ -74,8 +74,10 @@ def generate_launch_description():
             'approx_sync': True,
             'approx_sync_max_interval': 0.05,
             "Reg/Force3DoF": "true",
-            "Vis/MinInliers": "12",
+            "Vis/MinInliers": "15",
             'wait_imu_to_init': True, # 因為我們沒有有效的初始方向，所以關閉這個
+        'Vis/MaxFeatures': '2000',
+'Odom/ResetCountdown': '1',
         }],
         remappings=[
             ('rgb/image', '/camera/image_raw'),
@@ -154,7 +156,8 @@ def generate_launch_description():
 
             "Grid/Sensor": "0",
             "Grid/Scan2dUnknownSpaceFilled": "true",
-# "Grid/RayTracing": "true",
+"Grid/RayTracing": "true",
+"Rtabmap/StartNewMapOnLoopClosure": "true",
         }],
         remappings=[
             ('rgb/image', '/camera/image_raw'),

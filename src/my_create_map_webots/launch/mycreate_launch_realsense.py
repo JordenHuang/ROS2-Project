@@ -18,10 +18,11 @@ def generate_launch_description():
     robot_description_path = os.path.join(package_dir, 'resource', 'MyCreate_realsense.urdf')
     rviz_config_file = os.path.join(package_dir, 'config', 'rviz_config.rviz')
     # rviz_config_file = os.path.join(package_dir, 'config', 'rviz_config_ours.rviz')
+    ekf_params_path = os.path.join(package_dir, 'config', 'ekf.yaml')
 
     # world_path = os.path.join(package_dir, 'worlds', 'school-obstacle.wbt')
-    # world_path = os.path.join(package_dir, 'worlds', 'school-2nd-floor.wbt')
-    world_path = os.path.join(package_dir, 'worlds', 'test.wbt')
+    world_path = os.path.join(package_dir, 'worlds', 'school-2nd-floor.wbt')
+    # world_path = os.path.join(package_dir, 'worlds', 'test.wbt')
 
     webots = WebotsLauncher(
         world=world_path,
@@ -105,6 +106,19 @@ def generate_launch_description():
         ]
     )
 
+    ekf_filter_node = Node(
+        package='robot_localization',
+        executable='ekf_node',
+        name='ekf_filter_node',
+        output='screen',
+        parameters=[ekf_params_path],
+        remappings=[
+            # EKF 會將融合後的結果發佈到 /odometry/filtered
+            # 為了方便，我們把它 remapping 成 /odom
+            ('/odometry/filtered', '/odom')
+        ]
+    )
+
     depth_image_to_laserscan = Node(
         package="depthimage_to_laserscan",
         executable="depthimage_to_laserscan_node",
@@ -139,24 +153,27 @@ def generate_launch_description():
             'frame_id': 'base_link',
             'subscribe_depth': True,
             'subscribe_scan': True,
-            'subscribe_odom_info': True,
+            'subscribe_odom_info': False, # Set to false because we uses wheel odometry now
             'publish_tf': True,
             'approx_sync': True,
 
             'map_always_update': True,
+            'queue_size': 20,
 
             "RGBD/ProximityBySpace": "false",
             "RGBD/AngularUpdate": "0.01",
             "RGBD/LinearUpdate": "0.01",
             "RGBD/OptimizeFromGraphEnd": "false",
-"RGBD/CreateOccupancyGrid": "true",
+# "RGBD/CreateOccupancyGrid": "true",
             "Reg/Force3DoF": "true",
             "Vis/MinInliers": "12",
             # "MaxObstacleHeight": "0.1",
 
             "Grid/Sensor": "0",
             "Grid/Scan2dUnknownSpaceFilled": "true",
-"Grid/RayTracing": "true",
+            "Grid/RayTracing": "true",
+            'Grid/RangeMax': '4.0',
+            'Grid/RangeMin': '0.1',
 "Rtabmap/StartNewMapOnLoopClosure": "true",
         }],
         remappings=[
@@ -165,10 +182,8 @@ def generate_launch_description():
             ('depth/image', '/camera/depth/image_raw'),
             ('scan', '/d2l/scan'),
             # ('imu', '/imu/data'),
-            # ('rgb/image', '/camera/image_rect_color'),
-            # ('rgb/camera_info', '/left/camera_info'),
-            # # ('depth/image', '/pointcloud2depthImage/image'),
-            # ('depth/image', '/disparity2depth/depth'),
+            # ('odom', '/wheel/odom'),
+            ('odom', '/odom'),
         ],
         arguments=['-d',]# "--udebug"]
     )
@@ -213,7 +228,8 @@ def generate_launch_description():
             period=2.0,
             actions=[
                 rtabmap_slam_node,
-                rgbd_odometry_node,
+                ekf_filter_node,
+                # rgbd_odometry_node,
                 # icp_odometry_node,
                 depth_image_to_laserscan,
                 robot_state_publisher,

@@ -48,10 +48,10 @@ def generate_launch_description():
 
     return LaunchDescription([
         nav2,
-        # TimerAction(
-        #     period=2.5,
-        #     actions=[
-        #         explore_lite,
-        #     ]
-        # ),
+        TimerAction(
+            period=2.5,
+            actions=[
+                explore_lite,
+            ]
+        ),
     ])

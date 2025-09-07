@@ -8,15 +8,18 @@
 # Standard library imports
 import cv2
 import numpy as np
+import math
 
 # ROS and CV Bridge imports
 import rclpy
 from rclpy.time import Time
 from rclpy.qos import QoSProfile, QoSReliabilityPolicy, QoSHistoryPolicy
 from rclpy.qos import qos_profile_sensor_data
-from geometry_msgs.msg import Twist
+from geometry_msgs.msg import Twist, TransformStamped
 from rosgraph_msgs.msg import Clock
 from sensor_msgs.msg import Image, CameraInfo, Imu, MagneticField
+from nav_msgs.msg import Odometry
+from tf2_ros import TransformBroadcaster
 import cv2
 from cv_bridge import CvBridge, CvBridgeError
 
@@ -28,6 +31,20 @@ from controller import Supervisor
 # LINEAR_SPEED_FORWARD = 0.22
 # LINEAR_SPEED_BACKWARD = 0.15
 # ANGULAR_SPEED = 1.0
+
+def quaternion_from_euler(roll, pitch, yaw):
+    cy = math.cos(yaw * 0.5)
+    sy = math.sin(yaw * 0.5)
+    cp = math.cos(pitch * 0.5)
+    sp = math.sin(pitch * 0.5)
+    cr = math.cos(roll * 0.5)
+    sr = math.sin(roll * 0.5)
+    q = [0] * 4
+    q[0] = sr * cp * cy - cr * sp * sy
+    q[1] = cr * sp * cy + sr * cp * sy
+    q[2] = cr * cp * sy - sr * sp * cy
+    q[3] = cr * cp * cy + sr * sp * sy
+    return q
 
 class MyCreateDriverRealsense:
     def init(self, webots_node, properties):
@@ -44,17 +61,30 @@ class MyCreateDriverRealsense:
         self._keyboard  = self._robot.getKeyboard()
         self._keyboard.enable(self._TIMESTEP)
 
-        # Wheel related parameters
-        self.WHEEL_RADIUS = 0.031
-        self.AXLE_LENGTH = 0.271756
+        # Motor related parameters
+        self.WHEEL_RADIUS = 0.031 # 輪子半徑 (m)
+        self.WHEEL_DISTANCE = 0.2718 # 輪距 (m)
         self.v_left_rad_s = 0.0
         self.v_right_rad_s = 0.0
+
         self._left_motor = self._robot.getDevice("left wheel motor")
         self._right_motor = self._robot.getDevice("right wheel motor")
         self._left_motor.setPosition(float('+inf'));
         self._right_motor.setPosition(float('+inf'));
         self._left_motor.setVelocity(self.v_left_rad_s)
         self._right_motor.setVelocity(self.v_right_rad_s)
+
+        # Wheel sensor parameters
+        self.x = 0.0
+        self.y = 0.0
+        self.theta = 0.0
+        self.last_left_wheel_pos = 0.0
+        self.last_right_wheel_pos = 0.0
+
+        self._left_wheel_sensor = self._robot.getDevice("left wheel sensor")
+        self._right_wheel_sensor = self._robot.getDevice("right wheel sensor")
+        self._left_wheel_sensor.enable(self._TIMESTEP)
+        self._right_wheel_sensor.enable(self._TIMESTEP)
 
         self._counter = 100
 
@@ -92,6 +122,8 @@ class MyCreateDriverRealsense:
         self.depthCamInfoPub = self.node.create_publisher(CameraInfo, "/camera/depth/camera_info", reliable_qos_profile)
         self.imu_pub = self.node.create_publisher(Imu, "/imu/data_without_mag", reliable_qos_profile)
         self.mag_pub = self.node.create_publisher(MagneticField, "/imu/mag", reliable_qos_profile)
+        self.odom_pub = self.node.create_publisher(Odometry, "/wheel/odom", reliable_qos_profile)
+        # self.tf_broadcaster = TransformBroadcaster(self.node)
 
         # Subscriber
         self.node.create_subscription(Twist, 'cmd_vel', self.__cmd_vel_callback, 1)
@@ -114,8 +146,8 @@ class MyCreateDriverRealsense:
 
         # --- 運動學逆解計算 ---
         # 1. 計算左右輪各自需要的「線速度」(m/s)
-        v_left_m_s = forward_speed - (angular_speed * self.AXLE_LENGTH / 2.0)
-        v_right_m_s = forward_speed + (angular_speed * self.AXLE_LENGTH / 2.0)
+        v_left_m_s = forward_speed - (angular_speed * self.WHEEL_DISTANCE / 2.0)
+        v_right_m_s = forward_speed + (angular_speed * self.WHEEL_DISTANCE / 2.0)
 
         # 2. 將線速度轉換為馬達需要的「角速度」(rad/s)
         #    請務必確認 Webots 馬達 setVelocity() 函數所接受的單位！
@@ -123,23 +155,83 @@ class MyCreateDriverRealsense:
         self.v_left_rad_s = v_left_m_s / self.WHEEL_RADIUS
         self.v_right_rad_s = v_right_m_s / self.WHEEL_RADIUS
 
+    def publish_wheel_odometry(self, now):
+        # 1. 讀取輪子編碼器的當前值 (單位是弧度 rad)
+        current_left_wheel_pos = self._left_wheel_sensor.getValue()
+        current_right_wheel_pos = self._right_wheel_sensor.getValue()
+
+        # 2. 計算自上次更新以來的輪子轉動距離
+        delta_left = (current_left_wheel_pos - self.last_left_wheel_pos) * self.WHEEL_RADIUS
+        delta_right = (current_right_wheel_pos - self.last_right_wheel_pos) * self.WHEEL_RADIUS
+
+        # 3. 計算機器人的平均移動距離和姿態變化
+        delta_distance = (delta_left + delta_right) / 2.0
+        delta_theta = (delta_right - delta_left) / self.WHEEL_DISTANCE
+
+        # 4. 更新機器人的 2D 位姿 (x, y, theta)
+        self.x += delta_distance * math.cos(self.theta + delta_theta / 2.0)
+        self.y += delta_distance * math.sin(self.theta + delta_theta / 2.0)
+        self.theta += delta_theta
+
+        # 5. 更新上次的輪子位置，為下次計算做準備
+        self.last_left_wheel_pos = current_left_wheel_pos
+        self.last_right_wheel_pos = current_right_wheel_pos
+
+        # --- 建立並填充 Odometry 訊息 ---
+        odom_msg = Odometry()
+        odom_msg.header.stamp = now
+        odom_msg.header.frame_id = "odom"       # 里程計的參考座標系
+        odom_msg.child_frame_id = "base_link"   # 機器人的座標系
+
+        # 填充位置 (Pose)
+        odom_msg.pose.pose.position.x = self.x
+        odom_msg.pose.pose.position.y = self.y
+        odom_msg.pose.pose.position.z = 0.0
+
+        # 將 theta (Yaw) 轉換為四元數
+        q = quaternion_from_euler(0, 0, self.theta)
+        odom_msg.pose.pose.orientation.x = q[0]
+        odom_msg.pose.pose.orientation.y = q[1]
+        odom_msg.pose.pose.orientation.z = q[2]
+        odom_msg.pose.pose.orientation.w = q[3]
+
+        # 填充速度 (Twist) - 透過時間差計算
+        # 為了簡化，我們先設為零，RTAB-Map 主要關心 Pose
+        odom_msg.twist.twist.linear.x = delta_distance / (self._TIMESTEP / 1000.0)
+        odom_msg.twist.twist.angular.z = delta_theta / (self._TIMESTEP / 1000.0)
+
+        # 發佈 Odometry 訊息
+        self.odom_pub.publish(odom_msg)
+
+        # --- 發佈 TF 變換 (odom -> base_link) ---
+        # t = TransformStamped()
+        # t.header.stamp = now
+        # t.header.frame_id = "odom"
+        # t.child_frame_id = "base_link"
+        # t.transform.translation.x = self.x
+        # t.transform.translation.y = self.y
+        # t.transform.translation.z = 0.0
+        # t.transform.rotation = odom_msg.pose.pose.orientation
+
+        # self.tf_broadcaster.sendTransform(t)
+
     def step(self):
         self._counter += 1
 
         key = self._keyboard.getKey()
-        vel = np.pi / 1 * 1.5
+        vel = 1.4
         if key == ord('W'):
+            vel = vel * 3
             self._left_motor.setVelocity(vel)
             self._right_motor.setVelocity(vel)
         elif key == ord('S'):
+            vel = vel * 3
             self._left_motor.setVelocity(-vel)
             self._right_motor.setVelocity(-vel)
         elif key == ord('A'):
-            vel = vel / 3
             self._left_motor.setVelocity(-vel)
             self._right_motor.setVelocity(vel)
         elif key == ord('D'):
-            vel = vel / 3
             self._left_motor.setVelocity(vel)
             self._right_motor.setVelocity(-vel)
         else:
@@ -148,8 +240,8 @@ class MyCreateDriverRealsense:
             # forward_speed = self.__target_twist.linear.x
             # angular_speed = self.__target_twist.angular.z
 
-            # command_motor_left = (forward_speed - angular_speed * AXLE_LENGTH/2) / WHEEL_RADIUS / 3.5
-            # command_motor_right = (forward_speed + angular_speed * AXLE_LENGTH/2) / WHEEL_RADIUS / 3.5
+            # command_motor_left = (forward_speed - angular_speed * WHEEL_DISTANCE/2) / WHEEL_RADIUS / 3.5
+            # command_motor_right = (forward_speed + angular_speed * WHEEL_DISTANCE/2) / WHEEL_RADIUS / 3.5
             # self._left_motor.setVelocity(command_motor_left)
             # self._right_motor.setVelocity(command_motor_right)
 
@@ -222,6 +314,9 @@ class MyCreateDriverRealsense:
         mag_msg.magnetic_field_covariance[8] = small_covariance
 
         self.mag_pub.publish(mag_msg)
+
+        # === Publish wheel odometry ===
+        self.publish_wheel_odometry(now)
 
         # === Publish camera image ===
         # Get image from both camera

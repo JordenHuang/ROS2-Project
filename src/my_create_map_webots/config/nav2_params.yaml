@@ -503,19 +503,3 @@ docking_server:
       projection_time: 5.0
       simulation_step: 0.1
       dock_collision_threshold: 0.3
-
-explore_node:
-  ros__parameters:
-    robot_base_frame: base_link
-    costmap_topic: /global_costmap/costmap
-    costmap_updates_topic: /global_costmap/costmap_updates
-    # costmap_topic: /map
-    # costmap_updates_topic: /map_updates
-    visualize: true
-    planner_frequency: 0.1
-    progress_timeout: 50.0
-    potential_scale: 3
-    orientation_scale: 0
-    gain_scale: 1.0
-    transform_tolerance: 0.5
-    min_frontier_size: 0.30

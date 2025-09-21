@@ -170,7 +170,8 @@ def generate_launch_description():
             # "MaxObstacleHeight": "0.1",
 
             "Grid/Sensor": "2",
-'Grid/MaxObstacleHeight': '0.5',
+            # "Grid/Sensor": "0",
+'Grid/MaxObstacleHeight': '0.4',
 'Grid/NormalsSegmentation': 'false',
             # "Grid/Scan2dUnknownSpaceFilled": "true",
             "Grid/RayTracing": "true",
@@ -223,13 +224,13 @@ def generate_launch_description():
         webots,
         webots._supervisor,
         my_robot_driver,
-        # rtabmap_viz,
-        rviz2,
         imu_filter,
 
         TimerAction(
-            period=2.0,
+            period=4.0,
             actions=[
+                # rtabmap_viz,
+                rviz2,
                 rtabmap_slam_node,
                 ekf_filter_node,
                 # rgbd_odometry_node,

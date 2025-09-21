@@ -53,14 +53,24 @@ def generate_launch_description():
         parameters=[explore_params_file, {"use_sim_time": True}],
         output="screen",
         remappings=[("/tf", "tf"), ("/tf_static", "tf_static")],
+        # arguments=['--ros-args', '--log-level', 'DEBUG']
+    )
+
+    nav2_wfd = Node(
+        package="nav2_wfd",
+        name="nav2_wfd_node",
+        executable="explore",
+        # parameters=[explore_params_file, {"use_sim_time": True}],
+        # output="screen",
+        # remappings=[("/tf", "tf"), ("/tf_static", "tf_static")],
     )
 
     return LaunchDescription([
         nav2,
-        # TimerAction(
-        #     period=2.5,
-        #     actions=[
-        #         explore_lite,
-        #     ]
-        # ),
+        TimerAction(
+            period=2.5,
+            actions=[
+                explore_lite,
+            ]
+        ),
     ])

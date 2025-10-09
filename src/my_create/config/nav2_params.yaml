@@ -87,8 +87,8 @@ controller_server:
       # primary_controller: "dwb_core::DWBLocalPlanner"
       angular_dist_threshold: 0.785 # 0.5235 => 30 degree;0.61 => 35 degree;0.785 => 45 degree
       forward_sampling_distance: 0.5
-      rotate_to_heading_angular_vel: 0.4
-      max_angular_accel: 0.8 # 3.2
+      rotate_to_heading_angular_vel: 0.2 # 0.4
+      max_angular_accel: 0.6 # 0.8 # 3.2
       simulate_ahead_time: 1.0
 
       # MPPI controller parameters
@@ -97,11 +97,11 @@ controller_server:
       batch_size: 2000
       vx_std: 0.2
       vy_std: 0.0
-      wz_std: 0.4
+      wz_std: 0.2 # 0.4
       vx_max: 0.22
       vx_min: -0.15
       vy_max: 0.0
-      wz_max: 0.8
+      wz_max: 0.6 # 0.8
       iteration_count: 1
       prune_distance: 1.7
       transform_tolerance: 0.1
@@ -364,9 +364,9 @@ behavior_server:
     robot_base_frame: base_link
     transform_tolerance: 0.1
     simulate_ahead_time: 2.0
-    max_rotational_vel: 0.4 # 1.0
+    max_rotational_vel: 0.2 # 0.4 # 1.0
     min_rotational_vel: 0.0 # 0.4
-    rotational_acc_lim: 0.4 # 3.2
+    rotational_acc_lim: 0.2 # 0.4 # 3.2
 
 waypoint_follower:
   ros__parameters:

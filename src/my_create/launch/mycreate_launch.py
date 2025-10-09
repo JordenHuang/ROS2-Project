@@ -55,12 +55,35 @@ def generate_launch_description():
             "range_min": 0.01,
             "scan_height": 10,
             "use_sim_time": False,
+            # 'qos': 1,
         }],
         remappings=[
             ("depth", "/camera/camera/depth/image_rect_raw"),
             ("depth_camera_info", "/camera/camera/depth/camera_info"),
-        ]
+
+            # ('depth', '/camera/depth/image_rect_raw/compressedDepth'),
+        ],
     )
+
+    # rtabmap_rgbd_sync_node = Node(
+    #     package='rtabmap_sync',
+    #     executable='rgbd_sync',
+    #     name='rtabmap_rgbd_sync',
+    #     output='screen',
+    #     parameters=[{
+    #         'qos': 1,
+    #         'approx_sync': True,
+    #         'approx_sync_max_interval': 0.05,
+    #         'topic_queue_size': 30,
+    #         'sync_queue_size': 30,
+    #     }],
+    #     remappings=[
+    #          ('rgb/image', '/camera/camera/color/image_raw'),
+    #          ('depth/image', '/camera/camera/depth/image_rect_raw'),
+    #          ('rgb/camera_info', '/camera/camera/color/camera_info'),
+    #     ],
+    # )
+
 
     # RTAB-Map SLAM Node
     rtabmap_slam_node = Node(
@@ -71,8 +94,9 @@ def generate_launch_description():
         parameters=[{
             'use_sim_time': False,
             'frame_id': 'base_link',
-        'subscribe_rgbd': True,
-            # 'subscribe_depth': True,
+        # 'subscribe_rgbd': True,
+        # 'subscribe_rgb': True,
+            'subscribe_depth': True,
             'subscribe_scan': True,
             'subscribe_odom_info': False, # Set to false because we uses wheel odometry now
             'publish_tf': True,
@@ -98,12 +122,20 @@ def generate_launch_description():
             'Grid/RangeMax': '4.0',
             'Grid/RangeMin': '0.1',
             "Rtabmap/StartNewMapOnLoopClosure": "true",
+
+            'qos_image': 1,
+            # 'qos_rgbd': 1, # 如果你订阅的是 rgbd_image，这个参数更具体
+            # 同样地，为其他输入也设定可靠的 QoS 是一个好习惯
+            'qos_odom': 1,
+            'qos_scan': 1,
         }],
         remappings=[
-            # ('rgb/image', '/camera/camera/color/image_raw'),
-            # ('rgb/camera_info', '/camera/camera/color/camera_info'),
-            # ('depth/image', '/camera/camera/depth/image_rect_raw'),
-            ('rgbd_image', 'rgbd_image/compressed'),
+            ('rgb/camera_info', '/camera/camera/color/camera_info'),
+            ('rgb/image', '/camera/camera/color/image_raw'),
+            ('depth/image', '/camera/camera/depth/image_rect_raw'),
+            # ('rgb/image', '/camera/color/image_raw/compressed'),
+            # ('depth/image', '/camera/depth/image_rect_raw/compressedDepth'),
+        # ('rgbd_image', 'rgbd_image/compressed'),
             ('scan', '/d2l/scan'),
             ('odom', '/odometry/filtered'),
         ],
@@ -121,6 +153,8 @@ def generate_launch_description():
     return LaunchDescription([
         rtabmap_slam_node,
         nav2,
+        depth_image_to_laserscan,
+        # rtabmap_rgbd_sync_node,
         # explore_lite,
         rviz2,
     ])

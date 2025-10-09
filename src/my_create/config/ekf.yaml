@@ -1,6 +1,6 @@
 ekf_filter_node:
   ros__parameters:
-    use_sim_time: True
+    use_sim_time: False
 
     # [座標系設定]
     frequency: 30.0             # 濾波器的運行頻率
@@ -10,7 +10,7 @@ ekf_filter_node:
 
     # [輸入設定]
     # 我們將輪式里程計的 X, Y, Yaw 速度輸入進來
-    odom0: /wheel/odom
+    odom0: /odometry/filtered # /wheel/odom
     odom0_config: [false, false, false, # 不使用 X, Y, Z 位置
                    false, false, false, # 不使用 Roll, Pitch, Yaw 姿態
                    true,  true,  false, # [使用] X, Y 線速度
@@ -19,7 +19,7 @@ ekf_filter_node:
     odom0_differential: false
 
     # 我們將 IMU 的 Roll, Pitch, Yaw 和角速度輸入進來
-    imu0: /imu/data
+    imu0: /camera/camera/imu # /imu/data
     imu0_config: [false, false, false,
                   true,  true,  true,   # [使用] Roll, Pitch, Yaw 姿態
                   false, false, false,

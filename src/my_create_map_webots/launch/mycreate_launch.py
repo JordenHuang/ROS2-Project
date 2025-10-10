@@ -16,7 +16,8 @@ from launch.substitutions import PathJoinSubstitution
 def generate_launch_description():
     package_dir = get_package_share_directory('my_create_map_webots')
     robot_description_path = os.path.join(package_dir, 'resource', 'MyCreate.urdf')
-    world_path = os.path.join(package_dir, 'worlds', 'school-obstacle.wbt')
+    # world_path = os.path.join(package_dir, 'worlds', 'school-obstacle.wbt')
+    world_path = os.path.join(package_dir, 'worlds', 'school-room.wbt')
 
     webots = WebotsLauncher(
         world=world_path,
@@ -216,19 +217,23 @@ def generate_launch_description():
         executable='rtabmap_viz',
         name='rtabmap_viz',
         parameters=[{
+            'use_sim_time': True,
             'subscribe_laserScan': False,
-            'subscribe_depth': True,
-            # 'subscribe_stereo': True,
+            # 'subscribe_depth': True,
+            'subscribe_stereo': True,
             'subscribe_odom_info': True,
+            'sync_queue_size': 30,
+            'topic_queue_size': 30,
         }],
         remappings=[
-            # ('left/image_rect', '/left/image_rect_color'),
-            # ('right/image_rect', '/right/image_rect_color'),
-            # ('left/camera_info', '/left/camera_info'),
-            # ('right/camera_info', '/right/camera_info'),
-            ('rgb/image', '/left/image_rect_color'),
-            ('rgb/camera_info', '/left/camera_info'),
-            ('depth/image', '/pointcloud2depthImage/image'),
+            ('left/image_rect', '/left/image_rect_color'),
+            ('right/image_rect', '/right/image_rect_color'),
+            ('left/camera_info', '/left/camera_info'),
+            ('right/camera_info', '/right/camera_info'),
+            # ('rgb/image', '/left/image_rect'),
+            # ('rgb/camera_info', '/left/camera_info_color'),
+            # ('depth/image', '/disparity2depth/depth'),
+            # ('depth/image', '/pointcloud2depthImage/image'),
         ],
     )
 
@@ -237,10 +242,10 @@ def generate_launch_description():
         webots._supervisor,
         my_robot_driver,
 
-        # TimerAction(
-        #     period=4.0,
-        #     actions=[rtabmap_viz]
-        # ),
+        TimerAction(
+            period=4.0,
+            actions=[rtabmap_viz]
+        ),
         TimerAction(
             period=6.0,
             actions=[
@@ -263,11 +268,3 @@ def generate_launch_description():
     ])
 
 
-# disparity_range = 160
-# mode = sgbm_3way
-# correlation_window_size = 5
-# P1 = 8*3*5**2
-# P2 = 32*3*5**2
-# disp12_max_diff = 1
-# uniqueness_ratio = 0.0
-# prefilter_cap = 63

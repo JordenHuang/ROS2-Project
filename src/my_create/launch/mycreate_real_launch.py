@@ -6,13 +6,14 @@ from webots_ros2_driver.webots_launcher import WebotsLauncher
 from webots_ros2_driver.webots_controller import WebotsController
 from launch_ros.actions import Node
 from launch_ros.actions import ComposableNodeContainer
+from launch_ros.actions import SetRemap
 from launch_ros.descriptions import ComposableNode
 from launch_ros.substitutions import FindPackageShare
 from launch.actions import TimerAction
 from launch.actions import IncludeLaunchDescription
+from launch.actions import GroupAction
 from launch.substitutions import PathJoinSubstitution, Command
 from launch.launch_description_sources import PythonLaunchDescriptionSource, AnyLaunchDescriptionSource
-
 
 def generate_launch_description():
     package_dir = get_package_share_directory('my_create')
@@ -37,8 +38,13 @@ def generate_launch_description():
         [realsense_package_dir, 'launch', 'rs_launch.py']
     )
 
-    create = IncludeLaunchDescription(
-        AnyLaunchDescriptionSource([create_launch]),
+    create = GroupAction(
+        actions=[
+            SetRemap(src='cmd_vel', dst='/cmd_vel_out'),
+            IncludeLaunchDescription(
+                AnyLaunchDescriptionSource([create_launch])
+            ),
+        ]
     )
 
     realsense = IncludeLaunchDescription(

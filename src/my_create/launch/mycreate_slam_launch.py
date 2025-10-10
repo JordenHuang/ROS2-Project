@@ -2,7 +2,7 @@ from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, OpaqueFunction
 from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
-from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch.launch_description_sources import PythonLaunchDescriptionSource, AnyLaunchDescriptionSource
 from launch_ros.actions import Node
 import os
 
@@ -12,6 +12,8 @@ def generate_launch_description():
     rviz_config_file = os.path.join(package_dir, 'config', 'rviz_config.rviz')
     nav2_params_file = os.path.join(package_dir, 'config', 'nav2_params.yaml')
     explore_params_file = os.path.join(package_dir, 'config', 'explore.yaml')
+    twist_mux_params_file = os.path.join(package_dir, 'config', 'twist_mux.yaml')
+    joy_params_file = os.path.join(package_dir, 'config', 'mycreate_xbox360.yaml')
 
     # Directories
     pkg_nav2_bringup = get_package_share_directory('nav2_bringup')
@@ -26,7 +28,7 @@ def generate_launch_description():
         PythonLaunchDescriptionSource([nav2_launch]),
         launch_arguments=[
             ('use_sim_time', 'false'),
-            ('params_file', nav2_params_file)
+            ('params_file', nav2_params_file),
         ]
     )
 
@@ -140,6 +142,19 @@ def generate_launch_description():
         arguments=['-d',]# "--udebug"]
     )
 
+    twist_mux_node = Node(
+        package="twist_mux",
+        executable="twist_mux",
+        parameters=[twist_mux_params_file],
+        # remappings=[('/cmd_vel_out', '/cmd_vel')] # [关键] 将 twist_mux 的输出连接到机器人 Driver
+    )
+
+    joy_launch = PathJoinSubstitution([package_dir, 'launch', 'mycreate_joy_teleop.launch'])
+
+    joy = IncludeLaunchDescription(
+        AnyLaunchDescriptionSource([joy_launch])
+    )
+
     rviz2 = Node(
         package="rviz2",
         executable="rviz2",
@@ -154,5 +169,10 @@ def generate_launch_description():
         depth_image_to_laserscan,
         # rtabmap_rgbd_sync_node,
         # explore_lite,
+        twist_mux_node,
+        joy,
         rviz2,
     ])
+
+# Terminal cmd vel control
+# ❯ ros2 run teleop_twist_keyboard teleop_twist_keyboard

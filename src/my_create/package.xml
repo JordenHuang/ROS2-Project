@@ -16,6 +16,9 @@
   <exec_depend>rtabmap_rviz_plugins</exec_depend>
   <exec_depend>rtabmap_viz</exec_depend>
 
+  <exec_depend>joy</exec_depend>
+  <exec_depend>joy_teleop</exec_depend>
+
   <!-- 測試依賴 -->
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>

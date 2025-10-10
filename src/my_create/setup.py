@@ -15,6 +15,7 @@ setup(
         (f'share/{package_name}', ['package.xml']),
         # 啟動檔（launch）
         (f'share/{package_name}/launch', glob('launch/*.py')),
+        (f'share/{package_name}/launch', glob('launch/*.launch')),
         # Config files
         (f'share/{package_name}/config', glob('config/*')),
         # URDF

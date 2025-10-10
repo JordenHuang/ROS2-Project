@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="3">
-  <name>my_create_map_webots</name>
+  <name>my_create_simulation</name>
   <version>0.0.1</version>
   <description>ROS2 package for MyCreate robot and map in Webots</description>
   <maintainer email="jorden90573@gmail.com">jordenhuang</maintainer>

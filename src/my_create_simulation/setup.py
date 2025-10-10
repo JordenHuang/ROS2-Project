@@ -2,7 +2,7 @@ import os
 from glob import glob
 from setuptools import setup, find_packages
 
-package_name = 'my_create_map_webots'
+package_name = 'my_create_simulation'
 
 setup(
     name=package_name,
@@ -52,8 +52,6 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            # 'vision_node = my_create_map_webots.vision_node:main',
-            # 'MySupervisorDriver.py = my_create_map_webots.MySupervisorDriver:main',
         ],
     },
 )

@@ -14,7 +14,7 @@ from launch.substitutions import PathJoinSubstitution
 
 
 def generate_launch_description():
-    package_dir = get_package_share_directory('my_create_map_webots')
+    package_dir = get_package_share_directory('my_create_simulation')
     robot_description_path = os.path.join(package_dir, 'resource', 'MyCreate.urdf')
     # world_path = os.path.join(package_dir, 'worlds', 'school-obstacle.wbt')
     world_path = os.path.join(package_dir, 'worlds', 'school-room.wbt')

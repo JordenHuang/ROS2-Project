@@ -20,9 +20,6 @@ from sensor_msgs.msg import Image, CameraInfo
 import cv2
 from cv_bridge import CvBridge, CvBridgeError
 
-from my_create_map_webots.vision_node import VisionProcessor
-from controller import Supervisor
-
 
 # --- Constants ---
 LINEAR_SPEED_FORWARD = 0.22

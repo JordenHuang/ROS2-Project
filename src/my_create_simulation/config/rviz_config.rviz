@@ -9,7 +9,7 @@ Panels:
         - /TF1/Tree1
         - /MarkerArray2/Topic1
       Splitter Ratio: 0.5833333134651184
-    Tree Height: 276
+    Tree Height: 325
   - Class: rviz_common/Selection
     Name: Selection
   - Class: rviz_common/Tool Properties
@@ -80,7 +80,21 @@ Visualization Manager:
       Frame Timeout: 15
       Frames:
         All Enabled: false
-        Kinect:
+        MPU-9250:
+          Value: true
+        MPU-9250 accelerometer:
+          Value: true
+        MPU-9250 compass:
+          Value: true
+        MPU-9250 gyro:
+          Value: true
+        Realsense:
+          Value: true
+        RealsenseD455_display:
+          Value: true
+        RealsenseD455_emitter:
+          Value: true
+        RealsenseD455_receiver:
           Value: true
         base_link:
           Value: true
@@ -106,6 +120,8 @@ Visualization Manager:
           Value: true
         front wheel:
           Value: true
+        imu_link:
+          Value: true
         led_on:
           Value: true
         led_play:
@@ -121,6 +137,8 @@ Visualization Manager:
         rear wheel:
           Value: true
         receiver:
+          Value: true
+        solid:
           Value: true
         stand_left_back_1:
           Value: true
@@ -139,13 +157,28 @@ Visualization Manager:
         map:
           odom:
             base_link:
-              Kinect:
+              MPU-9250:
+                MPU-9250 accelerometer:
+                  {}
+                MPU-9250 compass:
+                  {}
+                MPU-9250 gyro:
+                  {}
+                imu_link:
+                  {}
+              Realsense:
                 camera_depth_frame:
                   camera_depth_optical_frame:
                     {}
                 camera_rgb_frame:
                   camera_rgb_optical_frame:
                     {}
+              RealsenseD455_display:
+                {}
+              RealsenseD455_emitter:
+                {}
+              RealsenseD455_receiver:
+                {}
               bumper_left:
                 {}
               bumper_right:
@@ -171,6 +204,8 @@ Visualization Manager:
               rear wheel:
                 {}
               receiver:
+                {}
+              solid:
                 {}
               stand_left_back_1:
                 {}
@@ -621,13 +656,41 @@ Visualization Manager:
       Enabled: true
       Name: MarkerArray
       Namespaces:
-        frontiers: true
+        {}
       Topic:
         Depth: 5
         Durability Policy: Volatile
         History Policy: Keep Last
         Reliability Policy: Reliable
         Value: /explore/frontiers
+      Value: true
+    - Class: rviz_default_plugins/Image
+      Enabled: true
+      Max Value: 1
+      Median window: 5
+      Min Value: 0
+      Name: Image
+      Normalize Range: true
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /MyCreate_realsense/RealsenseD455_rgb/image_color
+      Value: true
+    - Class: rviz_default_plugins/Image
+      Enabled: true
+      Max Value: 1
+      Median window: 5
+      Min Value: 0
+      Name: Image
+      Normalize Range: true
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /MyCreate_realsense/RealsenseD455_depth/image
       Value: true
   Enabled: true
   Global Options:
@@ -676,7 +739,7 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Scale: 84.97004699707031
+      Scale: 50.95614242553711
       Target Frame: <Fixed Frame>
       Value: TopDownOrtho (rviz_default_plugins)
       X: 1.4508352279663086
@@ -687,12 +750,14 @@ Window Geometry:
     collapsed: false
   Docking:
     collapsed: false
-  Height: 1044
+  Height: 1125
   Hide Left Dock: false
   Hide Right Dock: false
+  Image:
+    collapsed: false
   Navigation 2:
     collapsed: false
-  QMainWindow State: 000000ff00000000fd0000000400000000000001da00000382fc020000000afb0000001200530065006c0065006300740069006f006e00000001e10000009b000000ab00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb000000100044006900730070006c0061007900730100000069000001780000017800fffffffb00000018004e0061007600690067006100740069006f006e0020003201000001ed000001fe000001df00fffffffb0000001e005200650061006c00730065006e0073006500430061006d00650072006100000002c6000000c10000004500ffffff000000010000014d00000382fc0200000005fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a005600690065007700730100000069000001620000012300fffffffb0000000e0044006f0063006b0069006e006701000001d700000139000000cf00fffffffb0000001000530065006c006500630074006f0072010000031c000000cf000000cf00fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000004420000003efc0100000002fb0000000800540069006d00650100000000000004420000000000000000fb0000000800540069006d006501000000000000045000000000000000000000030b0000038200000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd0000000400000000000001da000003d3fc020000000cfb0000001200530065006c0065006300740069006f006e00000001e10000009b000000ab00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb000000100044006900730070006c0061007900730100000069000001a90000017800fffffffb00000018004e0061007600690067006100740069006f006e00200032010000021e0000021e000001fe00fffffffb0000001e005200650061006c00730065006e0073006500430061006d00650072006100000002c6000000c10000004500fffffffb0000000a0049006d0061006700650300000723000002ea000001da0000020efb0000000a0049006d00610067006503000007210000012c000001da000001d6000000010000014d000003d3fc0200000005fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a005600690065007700730100000069000001820000012300fffffffb0000000e0044006f0063006b0069006e006701000001f700000157000000cf00fffffffb0000001000530065006c006500630074006f0072010000035a000000e2000000cf00fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000004420000003efc0100000002fb0000000800540069006d00650100000000000004420000000000000000fb0000000800540069006d006501000000000000045000000000000000000000030b000003d300000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   RealsenseCamera:
     collapsed: false
   Selection:

@@ -133,8 +133,6 @@ def generate_launch_description():
             ('rgb/camera_info', '/camera/camera/color/camera_info'),
             ('rgb/image', '/camera/camera/color/image_raw'),
             ('depth/image', '/camera/camera/depth/image_rect_raw'),
-            # ('rgb/image', '/camera/color/image_raw/compressed'),
-            # ('depth/image', '/camera/depth/image_rect_raw/compressedDepth'),
         # ('rgbd_image', 'rgbd_image/compressed'),
             ('scan', '/d2l/scan'),
             ('odom', '/odometry/filtered'),

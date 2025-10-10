@@ -17,6 +17,8 @@ setup(
         (f'share/{package_name}/launch', glob('launch/*.py')),
         # Config files
         (f'share/{package_name}/config', glob('config/*')),
+        # URDF
+        (f'share/{package_name}/resource', glob('resource/*')),
     ],
 
     install_requires=['setuptools'],

@@ -1,0 +1,9 @@
+[submodule "src/create_robot"]
+	path = src/create_robot
+	url = https://github.com/AutonomyLab/create_robot.git
+[submodule "src/libcreate"]
+	path = src/libcreate
+	url = https://github.com/AutonomyLab/libcreate.git
+[submodule "src/m-explore-ros2"]
+	path = src/m-explore-ros2
+	url = https://github.com/robo-friends/m-explore-ros2.git

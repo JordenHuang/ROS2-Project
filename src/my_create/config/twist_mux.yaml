@@ -1,0 +1,26 @@
+twist_mux:
+  ros__parameters:
+    use_sim_time: False # 你的机器人是实体的
+
+    # [输出] 这是 twist_mux 最终发布的 topic，你的机器人 Driver 应该订阅这个
+    cmd_vel_out: "/cmd_vel_out"
+
+    # [输入] 定义所有速度指令的来源
+    topics:
+      # 优先级最高：键盘 (Keyboard)
+      keyboard:
+        topic: /cmd_vel_key  # 键盘节点发布的 topic
+        timeout: 0.5
+        priority: 100
+
+      # 优先级次之：摇杆 (Joystick)
+      joystick:
+        topic: /cmd_vel_joy  # 摇杆节点发布的 topic
+        timeout: 0.5         # 如果 0.5 秒没收到新指令，就认为超时
+        priority: 90        # 优先级最高（数字越大，优先级越高）
+
+      # 优先级最低：自主导航 (Navigation)
+      navigation:
+        topic: /cmd_vel  # Nav2 发布的 topic
+        timeout: 0.5
+        priority: 10

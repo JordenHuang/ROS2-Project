@@ -1,0 +1,1792 @@
+#VRML_SIM R2025a utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/appearances/protos/Parquetry.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/apartment_structure/protos/Wall.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/apartment_structure/protos/Window.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/appearances/protos/Roughcast.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/apartment_structure/protos/Door.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/apartment_structure/protos/GenericDoorAppearance.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/tables/protos/Table.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/living_room_furniture/protos/Sofa.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/appearances/protos/VarnishedPine.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/chairs/protos/OfficeChair.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/appearances/protos/Leather.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/television/protos/Television.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/school_furniture/protos/Clock.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/apartment_structure/protos/DoorLever.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/factory/containers/protos/CardboardBox.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/plants/protos/PottedTree.proto"
+EXTERNPROTO "../protos/MyCreate_realsense.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/floors/protos/Floor.proto"
+
+WorldInfo {
+  basicTimeStep 16
+}
+Viewpoint {
+  orientation -0.707105753838919 0.00028154443996862246 0.7071077524823371 3.141033565195678
+  position 1.685441371235993e-05 1.685446139173322e-05 52.24457735871674
+  exposure 0.5
+}
+TexturedBackground {
+  skybox FALSE
+}
+TexturedBackgroundLight {
+  castShadows FALSE
+}
+Floor {
+  translation -20 0 0
+}
+DEF ROOM_FLOOR Group {
+  children [
+    Pose {
+      translation 2.44 14.95 0
+      children [
+        Shape {
+          appearance Parquetry {
+            type "light strip"
+          }
+          geometry Plane {
+            size 7 4
+          }
+          castShadows FALSE
+        }
+      ]
+    }
+    Solid {
+      translation -4.48 14.95 0
+      children [
+        DEF ROOM_FLOOR_SHAPE Shape {
+          appearance Parquetry {
+            type "light strip"
+          }
+          geometry Plane {
+            size 7 4
+          }
+          castShadows FALSE
+        }
+      ]
+      name "solidFloor"
+      locked TRUE
+    }
+    Solid {
+      translation 2.44 25.07 0
+      children [
+        Shape {
+          appearance Parquetry {
+            type "light strip"
+          }
+          geometry Plane {
+            size 7 4
+          }
+          castShadows FALSE
+        }
+      ]
+      name "solidFloor(1)"
+    }
+    Solid {
+      translation 0.97 -1.03 0
+      children [
+        Shape {
+          appearance Parquetry {
+            type "light strip"
+          }
+          geometry Plane {
+            size 10 24
+          }
+          castShadows FALSE
+        }
+      ]
+      name "solidFloor(2)"
+      locked TRUE
+    }
+  ]
+}
+DEF HALLWAY Group {
+  children [
+    Solid {
+      translation 4.6 12 0.01
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColorMap ImageTexture {
+              url [
+                "floor1.jpg"
+              ]
+            }
+            transparency 0.1
+            roughness 1
+            metalness 0.5
+          }
+          geometry Plane {
+            size 3 2
+          }
+          castShadows FALSE
+        }
+      ]
+      name "hallway"
+      locked TRUE
+      rotationStep 0.262
+    }
+    Solid {
+      translation 1.6 12 0.01
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColorMap ImageTexture {
+              url [
+                "floor1.jpg"
+              ]
+            }
+            transparency 0.1
+            roughness 1
+            metalness 0.5
+          }
+          geometry Plane {
+            size 3 2
+          }
+          castShadows FALSE
+        }
+      ]
+      name "hallway(1)"
+      locked TRUE
+      rotationStep 0.262
+    }
+    Solid {
+      translation -1.39 12 0.01
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColorMap ImageTexture {
+              url [
+                "floor1.jpg"
+              ]
+            }
+            transparency 0.1
+            roughness 1
+            metalness 0.5
+          }
+          geometry Plane {
+            size 3 2
+          }
+          castShadows FALSE
+        }
+      ]
+      name "hallway(2)"
+      locked TRUE
+      rotationStep 0.262
+    }
+    Solid {
+      translation -4.39 12 0.01
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColorMap ImageTexture {
+              url [
+                "floor1.jpg"
+              ]
+            }
+            transparency 0.1
+            roughness 1
+            metalness 0.5
+          }
+          geometry Plane {
+            size 3 2
+          }
+          castShadows FALSE
+        }
+      ]
+      name "hallway(3)"
+      locked TRUE
+      rotationStep 0.262
+    }
+    Solid {
+      translation -6.98 12 0.01
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColorMap ImageTexture {
+              url [
+                "floor1.jpg"
+              ]
+            }
+            transparency 0.1
+            roughness 1
+            metalness 0.5
+          }
+          geometry Plane {
+            size 2.2 2
+          }
+          castShadows FALSE
+        }
+      ]
+      name "hallway(4)"
+      locked TRUE
+      rotationStep 0.262
+    }
+    Solid {
+      translation -5.01982 9.49964 0.01
+      rotation 0 0 1 1.572
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColorMap ImageTexture {
+              url [
+                "floor1.jpg"
+              ]
+            }
+            transparency 0.1
+            roughness 1
+            metalness 0.5
+          }
+          geometry Plane {
+            size 3 2
+          }
+          castShadows FALSE
+        }
+      ]
+      name "hallway(5)"
+      locked TRUE
+      rotationStep 0.262
+    }
+    Solid {
+      translation -5.01619 6.50964 0.01
+      rotation 0 0 1 1.572
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColorMap ImageTexture {
+              url [
+                "floor1.jpg"
+              ]
+            }
+            transparency 0.1
+            roughness 1
+            metalness 0.5
+          }
+          geometry Plane {
+            size 3 2
+          }
+          castShadows FALSE
+        }
+      ]
+      name "hallway(6)"
+      locked TRUE
+      rotationStep 0.262
+    }
+    Solid {
+      translation -5.01262 3.51964 0.01
+      rotation 0 0 1 1.572
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColorMap ImageTexture {
+              url [
+                "floor1.jpg"
+              ]
+            }
+            transparency 0.1
+            roughness 1
+            metalness 0.5
+          }
+          geometry Plane {
+            size 3 2
+          }
+          castShadows FALSE
+        }
+      ]
+      name "hallway(7)"
+      locked TRUE
+      rotationStep 0.262
+    }
+    Solid {
+      translation -5.00901 0.51964 0.01
+      rotation 0 0 1 1.572
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColorMap ImageTexture {
+              url [
+                "floor1.jpg"
+              ]
+            }
+            transparency 0.1
+            roughness 1
+            metalness 0.5
+          }
+          geometry Plane {
+            size 3 2
+          }
+          castShadows FALSE
+        }
+      ]
+      name "hallway(8)"
+      locked TRUE
+      rotationStep 0.262
+    }
+    Solid {
+      translation -5.00535 -2.48036 0.01
+      rotation 0 0 1 1.572
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColorMap ImageTexture {
+              url [
+                "floor1.jpg"
+              ]
+            }
+            transparency 0.1
+            roughness 1
+            metalness 0.5
+          }
+          geometry Plane {
+            size 3 2
+          }
+          castShadows FALSE
+        }
+      ]
+      name "hallway(9)"
+      locked TRUE
+      rotationStep 0.262
+    }
+    Solid {
+      translation -5.00175 -5.48036 0.01
+      rotation 0 0 1 1.572
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColorMap ImageTexture {
+              url [
+                "floor1.jpg"
+              ]
+            }
+            transparency 0.1
+            roughness 1
+            metalness 0.5
+          }
+          geometry Plane {
+            size 3 2
+          }
+          castShadows FALSE
+        }
+      ]
+      name "hallway(10)"
+      locked TRUE
+      rotationStep 0.262
+    }
+    Solid {
+      translation -4.9982 -8.46036 0.01
+      rotation 0 0 1 1.572
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColorMap ImageTexture {
+              url [
+                "floor1.jpg"
+              ]
+            }
+            transparency 0.1
+            roughness 1
+            metalness 0.5
+          }
+          geometry Plane {
+            size 3 2
+          }
+          castShadows FALSE
+        }
+      ]
+      name "hallway(11)"
+      locked TRUE
+      rotationStep 0.262
+    }
+    Solid {
+      translation -4.99463 -11.4504 0.01
+      rotation 0 0 1 1.572
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColorMap ImageTexture {
+              url [
+                "floor1.jpg"
+              ]
+            }
+            transparency 0.1
+            roughness 1
+            metalness 0.5
+          }
+          geometry Plane {
+            size 3 2
+          }
+          castShadows FALSE
+        }
+      ]
+      name "hallway(12)"
+      locked TRUE
+      rotationStep 0.262
+    }
+    Solid {
+      translation -4.94 -13.95 0.01
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColorMap ImageTexture {
+              url [
+                "floor1.jpg"
+              ]
+            }
+            transparency 0.1
+            roughness 1
+            metalness 0.5
+          }
+          geometry Plane {
+            size 2.2 2
+          }
+          castShadows FALSE
+        }
+      ]
+      name "hallway(13)"
+      locked TRUE
+      rotationStep 0.262
+    }
+    Solid {
+      translation -2.34 -14 0.01
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColorMap ImageTexture {
+              url [
+                "floor1.jpg"
+              ]
+            }
+            transparency 0.1
+            roughness 1
+            metalness 0.5
+          }
+          geometry Plane {
+            size 3 2
+          }
+          castShadows FALSE
+        }
+      ]
+      name "hallway(14)"
+      locked TRUE
+      rotationStep 0.262
+    }
+    Solid {
+      translation 0.66 -14 0.01
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColorMap ImageTexture {
+              url [
+                "floor1.jpg"
+              ]
+            }
+            transparency 0.1
+            roughness 1
+            metalness 0.5
+          }
+          geometry Plane {
+            size 3 2
+          }
+          castShadows FALSE
+        }
+      ]
+      name "hallway(15)"
+      locked TRUE
+      rotationStep 0.262
+    }
+    Solid {
+      translation 3.65 -14 0.01
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColorMap ImageTexture {
+              url [
+                "floor1.jpg"
+              ]
+            }
+            transparency 0.1
+            roughness 1
+            metalness 0.5
+          }
+          geometry Plane {
+            size 3 2
+          }
+          castShadows FALSE
+        }
+      ]
+      name "hallway(16)"
+      locked TRUE
+      rotationStep 0.262
+    }
+    Solid {
+      translation 6.65 -14 0.01
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColorMap ImageTexture {
+              url [
+                "floor1.jpg"
+              ]
+            }
+            transparency 0.1
+            roughness 1
+            metalness 0.5
+          }
+          geometry Plane {
+            size 3 2
+          }
+          castShadows FALSE
+        }
+      ]
+      name "hallway(17)"
+      locked TRUE
+      rotationStep 0.262
+    }
+    Solid {
+      translation 7.05548 -11.516 0.01
+      rotation 0 0 1 1.572
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColorMap ImageTexture {
+              url [
+                "floor1.jpg"
+              ]
+            }
+            transparency 0.1
+            roughness 1
+            metalness 0.5
+          }
+          geometry Plane {
+            size 3 2
+          }
+          castShadows FALSE
+        }
+      ]
+      name "hallway(18)"
+      locked TRUE
+      rotationStep 0.262
+    }
+    Solid {
+      translation 7.05194 -8.526 0.01
+      rotation 0 0 1 1.572
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColorMap ImageTexture {
+              url [
+                "floor1.jpg"
+              ]
+            }
+            transparency 0.1
+            roughness 1
+            metalness 0.5
+          }
+          geometry Plane {
+            size 3 2
+          }
+          castShadows FALSE
+        }
+      ]
+      name "hallway(19)"
+      locked TRUE
+      rotationStep 0.262
+    }
+    Solid {
+      translation 7.0484 -5.546 0.01
+      rotation 0 0 1 1.572
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColorMap ImageTexture {
+              url [
+                "floor1.jpg"
+              ]
+            }
+            transparency 0.1
+            roughness 1
+            metalness 0.5
+          }
+          geometry Plane {
+            size 3 2
+          }
+          castShadows FALSE
+        }
+      ]
+      name "hallway(20)"
+      locked TRUE
+      rotationStep 0.262
+    }
+    Solid {
+      translation 7.04481 -2.566 0.01
+      rotation 0 0 1 1.572
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColorMap ImageTexture {
+              url [
+                "floor1.jpg"
+              ]
+            }
+            transparency 0.1
+            roughness 1
+            metalness 0.5
+          }
+          geometry Plane {
+            size 3 2
+          }
+          castShadows FALSE
+        }
+      ]
+      name "hallway(21)"
+      locked TRUE
+      rotationStep 0.262
+    }
+    Solid {
+      translation 7.0412 0.414 0.01
+      rotation 0 0 1 1.572
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColorMap ImageTexture {
+              url [
+                "floor1.jpg"
+              ]
+            }
+            transparency 0.1
+            roughness 1
+            metalness 0.5
+          }
+          geometry Plane {
+            size 3 2
+          }
+          castShadows FALSE
+        }
+      ]
+      name "hallway(22)"
+      locked TRUE
+      rotationStep 0.262
+    }
+    Solid {
+      translation 7.03757 3.414 0.01
+      rotation 0 0 1 1.572
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColorMap ImageTexture {
+              url [
+                "floor1.jpg"
+              ]
+            }
+            transparency 0.1
+            roughness 1
+            metalness 0.5
+          }
+          geometry Plane {
+            size 3 2
+          }
+          castShadows FALSE
+        }
+      ]
+      name "hallway(23)"
+      locked TRUE
+      rotationStep 0.262
+    }
+    Solid {
+      translation 7.03401 6.414 0.01
+      rotation 0 0 1 1.572
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColorMap ImageTexture {
+              url [
+                "floor1.jpg"
+              ]
+            }
+            transparency 0.1
+            roughness 1
+            metalness 0.5
+          }
+          geometry Plane {
+            size 3 2
+          }
+          castShadows FALSE
+        }
+      ]
+      name "hallway(24)"
+      locked TRUE
+      rotationStep 0.262
+    }
+    Solid {
+      translation 7.03041 9.414 0.01
+      rotation 0 0 1 1.572
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColorMap ImageTexture {
+              url [
+                "floor1.jpg"
+              ]
+            }
+            transparency 0.1
+            roughness 1
+            metalness 0.5
+          }
+          geometry Plane {
+            size 3 2
+          }
+          castShadows FALSE
+        }
+      ]
+      name "hallway(25)"
+      locked TRUE
+      rotationStep 0.262
+    }
+    Solid {
+      translation 7.08676 12.404 0.01
+      rotation 0 0 1 1.572
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColorMap ImageTexture {
+              url [
+                "floor1.jpg"
+              ]
+            }
+            transparency 0.1
+            roughness 1
+            metalness 0.5
+          }
+          geometry Plane {
+            size 3 2
+          }
+          castShadows FALSE
+        }
+      ]
+      name "hallway(26)"
+      locked TRUE
+      rotationStep 0.262
+    }
+    Solid {
+      translation 7.08303 15.504 0.01
+      rotation 0 0 1 1.572
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColorMap ImageTexture {
+              url [
+                "floor1.jpg"
+              ]
+            }
+            transparency 0.1
+            roughness 1
+            metalness 0.5
+          }
+          geometry Plane {
+            size 3.2 2
+          }
+          castShadows FALSE
+        }
+      ]
+      name "hallway(27)"
+      locked TRUE
+      rotationStep 0.262
+    }
+  ]
+}
+DEF WALLS Group {
+  children [
+    Wall {
+      translation 8 1 0
+      rotation 0 0 1 -3.1415853071795863
+      name "wall 1"
+      size 0.1 32 2.5
+    }
+    Wall {
+      translation 1 -15 0
+      rotation 0 0 1 1.5708
+      name "wall 4"
+      size 0.1 14.1 2.5
+    }
+    Wall {
+      translation -6 -11.5 0
+      name "wall 7"
+      size 0.1 7 2.5
+    }
+    Wall {
+      translation -6 -4 0
+      name "wall 8"
+      size 0.1 4 2.5
+    }
+    Wall {
+      translation -6 0.5 0
+      name "wall 9"
+      size 0.1 1 2.5
+    }
+    Wall {
+      translation -6 4.5 0
+      name "wall 10"
+      size 0.1 3 2.5
+    }
+    Wall {
+      translation -6 9.5 0
+      name "wall 11"
+      size 0.1 3 2.5
+    }
+    Wall {
+      translation -7 11 0
+      rotation 0 0 1 1.5708
+      name "wall 12"
+      size 0.1 2.1 2.5
+    }
+    Wall {
+      translation -8 12 0
+      name "wall 13"
+      size 0.1 2 2.5
+    }
+    Wall {
+      translation -7.52 13 0
+      rotation 0 0 1 1.5708
+      name "wall 14"
+      size 0.1 1.05 2.5
+    }
+    Wall {
+      translation -5 13 0
+      rotation 0 0 1 1.5708
+      name "wall 15"
+      size 0.1 2 2.5
+    }
+    Wall {
+      translation 0.5 13 0
+      rotation 0 0 1 1.5708
+      name "wall 16"
+      size 0.1 7 2.5
+    }
+    Wall {
+      translation 5.55 13 0
+      rotation 0 0 1 1.5708
+      name "wall 17"
+      size 0.1 1.1 2.5
+    }
+    Wall {
+      translation -1 15 0
+      name "wall 18"
+      size 0.1 4 2.5
+    }
+    Wall {
+      translation -8 15 0
+      name "wall 18(1)"
+      size 0.1 4 2.5
+    }
+    Wall {
+      translation 3.5 17 0
+      rotation 0 0 1 1.5708
+      name "wall 19"
+      size 0.1 9.1 2.5
+    }
+    Wall {
+      translation -3.5 17 0
+      rotation 0 0 1 1.5708
+      name "wall 19(1)"
+      size 0.1 9.1 2.5
+    }
+    Wall {
+      translation -0.7 13.8 0
+      name "pall 4"
+      size 0.5 0.5 2.5
+      appearance Roughcast {
+        textureTransform TextureTransform {
+          scale 2.4 1
+        }
+      }
+    }
+    Wall {
+      translation 6 11 0
+      name "pall"
+      size 0.2 0.2 2.5
+      appearance Roughcast {
+        colorOverride 0.203922 0.396078 0.643137
+        textureTransform TextureTransform {
+          scale 2.4 1
+        }
+      }
+    }
+    Wall {
+      translation 6 -13 0
+      name "pall 1"
+      size 0.2 0.2 2.5
+      appearance Roughcast {
+        colorOverride 0.203922 0.396078 0.643137
+        textureTransform TextureTransform {
+          scale 2.4 1
+        }
+      }
+    }
+    Wall {
+      translation -4 -13 0
+      name "pall 2"
+      size 0.2 0.2 2.5
+      appearance Roughcast {
+        colorOverride 0.203922 0.396078 0.643137
+        textureTransform TextureTransform {
+          scale 2.4 1
+        }
+      }
+    }
+    Wall {
+      translation -4 11 0
+      name "pall 3"
+      size 0.2 0.2 2.5
+      appearance Roughcast {
+        colorOverride 0.203922 0.396078 0.643137
+        textureTransform TextureTransform {
+          scale 2.4 1
+        }
+      }
+    }
+  ]
+}
+DEF DOORS Group {
+  children [
+    Door {
+      translation -6 -7.5 0
+      rotation 0 0 1 4.692820414042842e-06
+      size 0.1 1 2.5
+      doorThickness 0.01
+      frameSize 0.01 0.05 0.05
+      doorAppearance GenericDoorAppearance {
+        colorOverride 0.756863 0.490196 0.0666667
+      }
+    }
+    Door {
+      translation -6 -6.5 0
+      rotation 0 0 1 4.6928e-06
+      name "door 1"
+      size 0.1 1 2.5
+      jointAtLeft FALSE
+      doorThickness 0.01
+      frameSize 0.01 0.05 0.05
+      doorAppearance GenericDoorAppearance {
+        colorOverride 0.756863 0.490196 0.0666667
+      }
+      doorHandle DoorLever {
+        jointAtLeft FALSE
+      }
+    }
+    Door {
+      translation -6 -1.5 0
+      rotation 0 0 1 4.692820414042842e-06
+      name "door 2"
+      size 0.1 1 2.5
+      doorThickness 0.01
+      frameSize 0.01 0.05 0.05
+      doorAppearance GenericDoorAppearance {
+        colorOverride 0.756863 0.490196 0.0666667
+      }
+    }
+    Door {
+      translation -6 -0.5 0
+      rotation 0 0 1 4.6928e-06
+      name "door 3"
+      size 0.1 1 2.5
+      jointAtLeft FALSE
+      doorThickness 0.01
+      frameSize 0.01 0.05 0.05
+      doorAppearance GenericDoorAppearance {
+        colorOverride 0.756863 0.490196 0.0666667
+      }
+      doorHandle DoorLever {
+        jointAtLeft FALSE
+      }
+    }
+    Door {
+      translation -6 1.5 0
+      rotation 0 0 1 4.692820414042842e-06
+      name "door 4"
+      size 0.1 1 2.5
+      doorThickness 0.01
+      frameSize 0.01 0.05 0.05
+      doorAppearance GenericDoorAppearance {
+        colorOverride 0.756863 0.490196 0.0666667
+      }
+    }
+    Door {
+      translation -6 2.5 0
+      rotation 0 0 1 4.6928e-06
+      name "door 5"
+      size 0.1 1 2.5
+      jointAtLeft FALSE
+      doorThickness 0.01
+      frameSize 0.01 0.05 0.05
+      doorAppearance GenericDoorAppearance {
+        colorOverride 0.756863 0.490196 0.0666667
+      }
+      doorHandle DoorLever {
+        jointAtLeft FALSE
+      }
+    }
+    Door {
+      translation -6 6.5 0
+      rotation 0 0 1 4.692820414042842e-06
+      name "door 6"
+      size 0.1 1 2.5
+      doorThickness 0.01
+      frameSize 0.01 0.05 0.05
+      doorAppearance GenericDoorAppearance {
+        colorOverride 0.756863 0.490196 0.0666667
+      }
+    }
+    Door {
+      translation -6 7.5 0
+      rotation 0 0 1 4.6928e-06
+      name "door 7"
+      size 0.1 1 2.5
+      jointAtLeft FALSE
+      doorThickness 0.01
+      frameSize 0.01 0.05 0.05
+      doorAppearance GenericDoorAppearance {
+        colorOverride 0.756863 0.490196 0.0666667
+      }
+      doorHandle DoorLever {
+        jointAtLeft FALSE
+      }
+    }
+    Door {
+      translation -6.5 13 0
+      rotation 0 0 1 -1.5707953071795862
+      name "door 8"
+      size 0.1 1 2.5
+      jointAtLeft FALSE
+      doorThickness 0.01
+      frameSize 0.01 0.05 0.05
+      doorAppearance GenericDoorAppearance {
+        colorOverride 0.756863 0.490196 0.0666667
+      }
+      doorHandle DoorLever {
+        jointAtLeft FALSE
+      }
+    }
+    Door {
+      translation -3.5 13 0
+      rotation 0 0 1 -1.5707953071795862
+      name "door 9"
+      size 0.1 1 2.5
+      jointAtLeft FALSE
+      doorThickness 0.01
+      frameSize 0.01 0.05 0.05
+      doorAppearance GenericDoorAppearance {
+        colorOverride 0.756863 0.490196 0.0666667
+      }
+      doorHandle DoorLever {
+        jointAtLeft FALSE
+      }
+    }
+    Door {
+      translation 4.5 13 0
+      rotation 0 0 1 1.5708
+      name "door 10"
+      size 0.1 1 2.5
+      canBeOpen FALSE
+      doorThickness 0.01
+      frameSize 0.01 0.05 0.05
+      doorAppearance GenericDoorAppearance {
+        colorOverride 0.756863 0.490196 0.0666667
+      }
+    }
+  ]
+}
+DEF WINDOWS Group {
+  children [
+    Window {
+      translation 6 15 0
+      size 0.2 4 2.5
+      windowThickness 0.03
+      bottomWallHeight 1
+      frameSize 0.01 0.02 0.01
+      windowSillSize 0 0
+    }
+    Window {
+      translation 6 9.5 0
+      name "window 1"
+      size 0.2 3 2.5
+      windowThickness 0.03
+      bottomWallHeight 1
+      frameSize 0.01 0.02 0.01
+      windowSillSize 0 0
+      wallAppearance Roughcast {
+        colorOverride 0.203922 0.396078 0.643137
+      }
+    }
+    Window {
+      translation 6 7 0
+      name "window door 1"
+      size 0.2 2 2.5
+      glassTransparency 0
+      windowThickness 0.03
+      bottomWallHeight 0
+      windowHeight 2.4
+      frameSize 0.01 0.02 0.01
+      windowSillSize 0 0
+      wallAppearance Roughcast {
+        colorOverride 0.203922 0.396078 0.643137
+      }
+    }
+    Window {
+      translation 6 4.5 0
+      name "window 2"
+      size 0.2 3 2.5
+      windowThickness 0.03
+      bottomWallHeight 1
+      frameSize 0.01 0.02 0.01
+      windowSillSize 0 0
+      wallAppearance Roughcast {
+        colorOverride 0.203922 0.396078 0.643137
+      }
+    }
+    Window {
+      translation 6 0.5 0
+      name "window 3"
+      size 0.2 5 2.5
+      windowThickness 0.03
+      bottomWallHeight 1
+      frameSize 0.01 0.02 0.01
+      windowSillSize 0 0
+      wallAppearance Roughcast {
+        colorOverride 0.203922 0.396078 0.643137
+      }
+    }
+    Window {
+      translation 6 -3 0
+      name "window door 2"
+      size 0.2 2 2.5
+      glassTransparency 0
+      windowThickness 0.03
+      bottomWallHeight 0
+      windowHeight 2.4
+      frameSize 0.01 0.02 0.01
+      windowSillSize 0 0
+      wallAppearance Roughcast {
+        colorOverride 0.203922 0.396078 0.643137
+      }
+    }
+    Window {
+      translation 6 -8.5 0
+      name "window 4"
+      size 0.2 9 2.5
+      windowThickness 0.03
+      bottomWallHeight 1
+      frameSize 0.01 0.02 0.01
+      windowSillSize 0 0
+      wallAppearance Roughcast {
+        colorOverride 0.203922 0.396078 0.643137
+      }
+    }
+    Window {
+      translation 4 -13 0
+      rotation 0 0 1 1.5708
+      name "window 5"
+      size 0.2 4 2.5
+      windowThickness 0.03
+      bottomWallHeight 1
+      frameSize 0.01 0.02 0.01
+      windowSillSize 0 0
+      wallAppearance Roughcast {
+        colorOverride 0.203922 0.396078 0.643137
+      }
+    }
+    Window {
+      translation 1 -13 0
+      rotation 0 0 1 1.5708
+      name "window door 3"
+      size 0.2 2 2.5
+      glassTransparency 0
+      windowThickness 0.03
+      bottomWallHeight 0
+      windowHeight 2.4
+      frameSize 0.01 0.02 0.01
+      windowSillSize 0 0
+      wallAppearance Roughcast {
+        colorOverride 0.203922 0.396078 0.643137
+      }
+    }
+    Window {
+      translation -2 -13 0
+      rotation 0 0 1 1.5708
+      name "window 6"
+      size 0.2 4 2.5
+      windowThickness 0.03
+      bottomWallHeight 1
+      frameSize 0.01 0.02 0.01
+      windowSillSize 0 0
+      wallAppearance Roughcast {
+        colorOverride 0.203922 0.396078 0.643137
+      }
+    }
+    Window {
+      translation -4 -5 0
+      name "window 7"
+      size 0.2 16 2.5
+      windowThickness 0.03
+      bottomWallHeight 1
+      frameSize 0.01 0.02 0.01
+      windowSillSize 0 0
+      wallAppearance Roughcast {
+        colorOverride 0.203922 0.396078 0.643137
+      }
+    }
+    Window {
+      translation -4 7 0
+      name "window 8"
+      size 0.2 8 2.5
+      windowThickness 0.03
+      bottomWallHeight 1
+      frameSize 0.01 0.02 0.01
+      windowSillSize 0 0
+      wallAppearance Roughcast {
+        colorOverride 0.203922 0.396078 0.643137
+      }
+    }
+    Window {
+      translation 1 3 0
+      rotation 0 0 1 1.5708
+      name "window 9"
+      size 0.2 10 2.5
+      windowThickness 0.03
+      bottomWallHeight 1
+      frameSize 0.01 0.02 0.01
+      windowSillSize 0 0
+      wallAppearance Roughcast {
+        colorOverride 0.203922 0.396078 0.643137
+      }
+    }
+    Window {
+      translation 1 11 0
+      rotation 0 0 1 1.5708
+      name "window 10"
+      size 0.2 10 2.5
+      windowThickness 0.03
+      bottomWallHeight 1
+      frameSize 0.01 0.02 0.01
+      windowSillSize 0 0
+      wallAppearance Roughcast {
+        colorOverride 0.203922 0.396078 0.643137
+      }
+    }
+  ]
+}
+DEF TABLES_1 Group {
+  children [
+    Table {
+      translation 0.6 15.5 0
+      rotation 0 0 1 1.5708
+      size 1 1.6 0.8
+    }
+    Table {
+      translation 2.2 15.5 0
+      rotation 0 0 1 1.5708
+      name "table 1"
+      size 1 1.6 0.8
+    }
+    Table {
+      translation 4.2 14.9 0
+      rotation 0 0 -1 -5.307179586466759e-06
+      name "table 3"
+      size 1 1.6 0.5
+      trayAppearance VarnishedPine {
+        colorOverride 0.803922 0.67451 0.576471
+        textureTransform TextureTransform {
+          scale 10 10
+        }
+      }
+      legAppearance VarnishedPine {
+        colorOverride 0 0 0
+        textureTransform TextureTransform {
+          scale 4 5
+        }
+      }
+    }
+  ]
+}
+DEF TABLES_2 Group {
+  children [
+    Table {
+      translation 5.09 4.59 0
+      rotation 0 0 1 1.5708
+      name "table235"
+      size 1 1.6 0.8
+      trayAppearance DEF TABLE235_TRAY_APPERANCE VarnishedPine {
+        textureTransform TextureTransform {
+          scale 10 10
+        }
+      }
+      legAppearance DEF TABLE235_LEG_APPERANCE VarnishedPine {
+        textureTransform TextureTransform {
+          scale 4 5
+        }
+      }
+    }
+    Table {
+      translation 3.49 4.59 0
+      rotation 0 0 1 1.5708
+      name "table235(1)"
+      size 1 1.6 0.8
+    }
+    Table {
+      translation -3.09 4.59 0
+      rotation 0 0 1 1.5708
+      name "table235(2)"
+      size 1 1.6 0.8
+    }
+    Table {
+      translation -1.49 4.59 0
+      rotation 0 0 1 1.5708
+      name "table235(3)"
+      size 1 1.6 0.8
+    }
+    Table {
+      translation 5.09 9.35 0
+      rotation 0 0 1 1.5708
+      name "table235(4)"
+      size 1 1.6 0.8
+    }
+    Table {
+      translation 3.49 9.35 0
+      rotation 0 0 1 1.5708
+      name "table235(5)"
+      size 1 1.6 0.8
+    }
+    Table {
+      translation -3.09 9.35 0
+      rotation 0 0 1 1.5708
+      name "table235(6)"
+      size 1 1.6 0.8
+    }
+    Table {
+      translation -1.49 9.35 0
+      rotation 0 0 1 1.5708
+      name "table235(7)"
+      size 1 1.6 0.8
+    }
+    Table {
+      translation -3.09 6.99 0
+      rotation 0 0 1 1.5708
+      name "table235(8)"
+      size 1 1.6 0.8
+    }
+    Table {
+      translation -1.49 6.99 0
+      rotation 0 0 1 1.5708
+      name "table235(9)"
+      size 1 1.6 0.8
+    }
+  ]
+}
+DEF TABLES_3 Group {
+  children [
+    Table {
+      translation 3.88 -10.97 0
+      rotation 0 0 1 1.5708
+      name "table234"
+      size 1 4 0.8
+    }
+    Table {
+      translation -1.89 -10.97 0
+      rotation 0 0 1 1.5708
+      name "table234(1)"
+      size 1 4 0.8
+    }
+    Table {
+      translation 3.88 -8.37 0
+      rotation 0 0 1 1.5708
+      name "table234(2)"
+      size 1 4 0.8
+    }
+    Table {
+      translation -1.89 -8.35 0
+      rotation 0 0 1 1.5708
+      name "table234(3)"
+      size 1 4 0.8
+    }
+    Table {
+      translation 4.13 -5.68 0
+      rotation 0 0 1 -3.1415853071795863
+      name "table234(4)"
+      size 0 4 0.8
+    }
+    Table {
+      translation -1.89 -5.66 0
+      rotation 0 0 1 1.5708
+      name "table234(5)"
+      size 1 4 0.8
+    }
+    Table {
+      translation -1.89 -3.12 0
+      rotation 0 0 1 1.5708
+      name "table234(6)"
+      size 1 4 0.8
+    }
+    Table {
+      translation 3.88 -0.76 0
+      rotation 0 0 1 1.5708
+      name "table234(7)"
+      size 1 4 0.8
+    }
+    Table {
+      translation -1.89 -0.73 0
+      rotation 0 0 1 1.5708
+      name "table234(8)"
+      size 1 4 0.8
+    }
+    Table {
+      translation 3.88 1.36 0
+      rotation 0 0 1 1.5708
+      name "table234(9)"
+      size 1 4 0.8
+    }
+    Table {
+      translation -1.89 1.39 0
+      rotation 0 0 1 1.5708
+      name "table234(10)"
+      size 1 4 0.8
+    }
+  ]
+}
+DEF OFFICE_CHAIRS Group {
+  children [
+    OfficeChair {
+      translation 5.03 -5.98 0
+      rotation 0 0 1 3.14159
+      name "office chair234"
+      seatAppearance Leather {
+        tone "light"
+        textureTransform TextureTransform {
+          scale 10 10
+        }
+      }
+    }
+    OfficeChair {
+      translation 5.03 -8.95 0
+      rotation 0 0 -1 -1.5707953071795862
+      name "office chair234(1)"
+      seatAppearance Leather {
+        tone "light"
+        textureTransform TextureTransform {
+          scale 10 10
+        }
+      }
+    }
+    OfficeChair {
+      translation 3.88 -8.95 0
+      rotation 0 0 -1 -1.5707953071795862
+      name "office chair234(2)"
+      seatAppearance Leather {
+        tone "light"
+        textureTransform TextureTransform {
+          scale 10 10
+        }
+      }
+    }
+    OfficeChair {
+      translation 2.66 -8.95 0
+      rotation 0 0 -1 -1.5707953071795862
+      name "office chair234(3)"
+      seatAppearance Leather {
+        tone "light"
+        textureTransform TextureTransform {
+          scale 10 10
+        }
+      }
+    }
+    OfficeChair {
+      translation -1.34132 -9.36538 0
+      rotation 0 0 -1 -1.3089953071795861
+      name "office chair234(4)"
+      seatAppearance Leather {
+        tone "light"
+        textureTransform TextureTransform {
+          scale 10 10
+        }
+      }
+    }
+    OfficeChair {
+      translation -3 -8.95 0
+      rotation 0 0 -1 -1.5707953071795862
+      name "office chair234(5)"
+      seatAppearance Leather {
+        tone "light"
+        textureTransform TextureTransform {
+          scale 10 10
+        }
+      }
+    }
+    OfficeChair {
+      translation 3.39 -10.11 0
+      rotation 0 0 -1 -1.5707953071795862
+      name "office chair234(6)"
+      seatAppearance Leather {
+        tone "light"
+        textureTransform TextureTransform {
+          scale 10 10
+        }
+      }
+    }
+    OfficeChair {
+      translation 5.03 -11.59 0
+      rotation 0 0 1 2.09439
+      name "office chair234(7)"
+      seatAppearance Leather {
+        tone "light"
+        textureTransform TextureTransform {
+          scale 10 10
+        }
+      }
+    }
+    OfficeChair {
+      translation 2.81 -11.8 0
+      rotation 0 0 -1 -1.5707953071795862
+      name "office chair234(8)"
+      seatAppearance Leather {
+        tone "light"
+        textureTransform TextureTransform {
+          scale 10 10
+        }
+      }
+    }
+    OfficeChair {
+      translation -0.84 -11.54 0
+      rotation 0 0 -1 -1.5707953071795862
+      name "office chair234(9)"
+      seatAppearance Leather {
+        tone "light"
+        textureTransform TextureTransform {
+          scale 10 10
+        }
+      }
+    }
+    OfficeChair {
+      translation -2.41914 -11.7059 0
+      rotation 0 0 1 1.83259
+      name "office chair234(10)"
+      seatAppearance Leather {
+        tone "light"
+        textureTransform TextureTransform {
+          scale 10 10
+        }
+      }
+    }
+  ]
+}
+Sofa {
+  translation 0.5 13.55 -0.1
+  rotation 0 0 1 1.5708
+  color 0.341176 0.890196 0.537255
+}
+Sofa {
+  translation 5.35 15 -0.1
+  rotation 0 0 1 -3.1415853071795863
+  name "sofa 1"
+  color 0.341176 0.890196 0.537255
+}
+OfficeChair {
+  translation 0.3 15 0
+  rotation 0 0 1 1.5708
+  seatAppearance Leather {
+    colorOverride 0.101961 0.301961 0.2
+    tone "light"
+    textureTransform TextureTransform {
+      scale 10 10
+    }
+  }
+}
+OfficeChair {
+  translation 0.9 14.9 0
+  rotation 0 0 1 1.5708
+  name "office chair(1)"
+  seatAppearance Leather {
+    colorOverride 0.101961 0.301961 0.2
+    tone "light"
+    textureTransform TextureTransform {
+      scale 10 10
+    }
+  }
+}
+OfficeChair {
+  translation 1.9 14.9 0
+  rotation 0 0 1 2.3562
+  name "office chair(2)"
+  seatAppearance Leather {
+    colorOverride 0.101961 0.301961 0.2
+    tone "light"
+    textureTransform TextureTransform {
+      scale 10 10
+    }
+  }
+}
+OfficeChair {
+  translation 2.6 15.1 0
+  rotation 0 0 1 1.5708
+  name "office chair(3)"
+  seatAppearance Leather {
+    colorOverride 0.101961 0.301961 0.2
+    tone "light"
+    textureTransform TextureTransform {
+      scale 10 10
+    }
+  }
+}
+OfficeChair {
+  translation 0.3 15.8 0
+  rotation 0 0 1 -1.5707953071795862
+  name "office chair(4)"
+  seatAppearance Leather {
+    colorOverride 0.101961 0.301961 0.2
+    tone "light"
+    textureTransform TextureTransform {
+      scale 10 10
+    }
+  }
+}
+OfficeChair {
+  translation 0.9 16 0
+  rotation 0 0 1 -1.5707953071795862
+  name "office chair(5)"
+  seatAppearance Leather {
+    colorOverride 0.101961 0.301961 0.2
+    tone "light"
+    textureTransform TextureTransform {
+      scale 10 10
+    }
+  }
+}
+OfficeChair {
+  translation 2 16.5 0
+  rotation 0 0 1 -0.5236053071795865
+  name "office chair(6)"
+  seatAppearance Leather {
+    colorOverride 0.101961 0.301961 0.2
+    tone "light"
+    textureTransform TextureTransform {
+      scale 10 10
+    }
+  }
+}
+OfficeChair {
+  translation 2.5 15.9 0
+  rotation 0 0 -1 1.8326
+  name "office chair(7)"
+  seatAppearance Leather {
+    colorOverride 0.101961 0.301961 0.2
+    tone "light"
+    textureTransform TextureTransform {
+      scale 10 10
+    }
+  }
+}
+OfficeChair {
+  translation 1.8 13.5 0
+  rotation 0 0 1 1.57079
+  name "office chair(8)"
+  seatAppearance Leather {
+    colorOverride 0.101961 0.301961 0.2
+    tone "light"
+    textureTransform TextureTransform {
+      scale 10 10
+    }
+  }
+}
+OfficeChair {
+  translation 2.6 13.8 0
+  rotation 0 0 -1 -2.094395307179586
+  name "office chair(9)"
+  seatAppearance Leather {
+    colorOverride 0.101961 0.301961 0.2
+    tone "light"
+    textureTransform TextureTransform {
+      scale 10 10
+    }
+  }
+}
+OfficeChair {
+  translation 3.3 13.5 0
+  rotation 0 0 -1 -1.3089953071795861
+  name "office chair(10)"
+  seatAppearance Leather {
+    colorOverride 0.101961 0.301961 0.2
+    tone "light"
+    textureTransform TextureTransform {
+      scale 10 10
+    }
+  }
+}
+Television {
+  translation -0.9 15.5 1.3
+  controller "<none>"
+}
+Clock {
+  translation -0.43 13.8 2
+}
+PottedTree {
+  translation 5.7 -14.7 0
+}
+PottedTree {
+  translation 3.7 13.3 0
+  name "potted tree(1)"
+}
+CardboardBox {
+  translation 7.65 8 0.3
+  rotation 0 0 1 1.5708
+}
+CardboardBox {
+  translation 6.4 12.7 0.3
+  rotation 0 0 1 1.5708
+  name "cardboard box(1)"
+}
+CardboardBox {
+  translation 6.4 -5 0.3
+  rotation 0 0 1 1.5708
+  name "cardboard box(2)"
+}
+CardboardBox {
+  translation -5 -9 0.3
+  rotation 0 0 1 1.5708
+  name "cardboard box(3)"
+}
+CardboardBox {
+  translation -5.65 4 0.3
+  rotation 0 0 1 1.5708
+  name "cardboard box(4)"
+}
+CardboardBox {
+  translation -4.4 4 0.3
+  rotation 0 0 1 1.5708
+  name "cardboard box(5)"
+}
+CardboardBox {
+  translation -4.4 11 0.3
+  rotation 0 0 1 1.5708
+  name "cardboard box(6)"
+}
+MyCreate_realsense {
+  ## Empty room
+  # translation -1.55064 16.4355 0.044
+  # rotation 0 0 1 -1.58
+  ## Table only
+  # translation 5.35397 8.20068 0.044
+  # rotation 0 0 1 -1.5800053071795865
+  ## Table and Chair
+  # translation 5.67052 -3.04286 0.044
+  # rotation 0 0 1 -1.58
+  ## On the hallway
+  translation 7.67052 -3.04286 0.044
+  rotation 0 0 1 1.58
+  ## Meeting room
+  # translation 3.31231 16.6521 0.00198029
+  # rotation 0 0 1 -1.53
+  ##
+  controller "<extern>"
+  camera_width 360
+  camera_height 280
+}

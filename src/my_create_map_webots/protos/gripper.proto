@@ -1,0 +1,132 @@
+#VRML_SIM R2023b utf8
+
+PROTO gripper [
+  field SFString   name             "Gripper"
+]
+
+{
+  Solid {
+    translation 0.005 0.004 0
+    children [
+      Group {
+        children [
+          DEF GRIPPER_BODY Pose {
+            translation 2.644e-08 0.01 0.04
+            rotation 1 4.7949e-09 1.32679e-06 3.14159
+            children [
+              Shape {
+                appearance PBRAppearance {
+                  roughness 1
+                  metalness 0
+                }
+                geometry Mesh {
+                  url [
+                    "../protos/gripper/gripper_body.obj"
+                  ]
+                }
+                castShadows FALSE
+              }
+            ]
+          }
+          DEF GRIPPER_LEFT_ARM HingeJoint {
+            jointParameters HingeJointParameters {
+              axis 0 1 0
+              anchor 0 0 0.03
+            }
+            device [
+              RotationalMotor {
+                name "gripper_left_arm_rotational_motor"
+              }
+              PositionSensor {
+                name "gripper_left_arm_position_sensor"
+              }
+            ]
+            endPoint Solid {
+              translation 1.06048e-07 0.0100001 0.04
+              rotation 1 4.7949e-09 1.32679e-06 3.14159
+              children [
+                Shape {
+                  appearance PBRAppearance {
+                    roughness 1
+                    metalness 0
+                  }
+                  geometry Mesh {
+                    url [
+                      "../protos/gripper/gripper_left_arm.obj"
+                    ]
+                  }
+                  castShadows FALSE
+                }
+              ]
+              name "gripper_left_arm"
+              boundingObject Pose {
+                translation -0.035 0.003 -0.065
+                children [
+                  Box {
+                    size 0.015 0.022 0.03
+                  }
+                ]
+              }
+              physics Physics {
+              }
+            }
+          }
+          DEF GRIPPER_RIGHT_ARM HingeJoint {
+            jointParameters HingeJointParameters {
+              axis 0 -1 0
+              anchor 0 0 0.03
+            }
+            device [
+              RotationalMotor {
+                name "gripper_right_arm_rotational_motor"
+              }
+              PositionSensor {
+                name "gripper_right_arm_position_sensor"
+              }
+            ]
+            endPoint Solid {
+              translation 9e-08 0.00999992 0.04
+              rotation 0.9999999999991198 4.794899999995779e-09 1.3267899999988322e-06 3.14159
+              children [
+                Shape {
+                  appearance PBRAppearance {
+                    roughness 1
+                    metalness 0
+                  }
+                  geometry Mesh {
+                    url [
+                      "../protos/gripper/gripper_right_arm.obj"
+                    ]
+                  }
+                  castShadows FALSE
+                }
+              ]
+              name "gripper_right_arm"
+              boundingObject Pose {
+                translation 0.023 0.003 -0.065
+                children [
+                  Box {
+                    size 0.015 0.022 0.03
+                  }
+                ]
+              }
+              physics Physics {
+              }
+            }
+          }
+        ]
+      }
+    ]
+    name IS name
+    boundingObject Pose {
+      translation -0.005 -0.015 0.045
+      children [
+        Box {
+          size 0.06 0.06 0.065
+        }
+      ]
+    }
+    physics Physics {
+    }
+  }
+}

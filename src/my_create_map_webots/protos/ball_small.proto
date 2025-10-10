@@ -1,0 +1,32 @@
+#VRML_SIM R2023b utf8
+
+PROTO ball_small [
+  field  SFVec3f     translation  0 0 0
+  field  SFRotation  rotation     0 0 1 0
+  field  SFString    name         "ball_small"  # Is `Robot.name`.
+]
+
+{
+  Solid {
+    translation IS translation
+    rotation IS rotation
+    children [
+      DEF BALL_SMALL_SHAPE Shape {
+        appearance PBRAppearance {
+          baseColor 0.5 0.5 0.5
+          roughness 0.2
+          metalness 0
+        }
+        geometry Sphere {
+          radius 0.012
+        }
+      }
+    ]
+    name IS name
+    boundingObject USE BALL_SMALL_SHAPE
+    physics Physics {
+      density -1
+      mass 0.075
+    }
+  }
+}

@@ -1,0 +1,29 @@
+ekf_filter_node:
+  ros__parameters:
+    use_sim_time: True
+
+    # [座標系設定]
+    frequency: 30.0             # 濾波器的運行頻率
+    odom_frame: odom            # [輸出] 融合後的 odom 座標系
+    base_link_frame: base_link  # 機器人的基準座標系
+    world_frame: odom           # 我們只做 odom，不做 map
+
+    # [輸入設定]
+    # 我們將輪式里程計的 X, Y, Yaw 速度輸入進來
+    odom0: /wheel/odom
+    odom0_config: [false, false, false, # 不使用 X, Y, Z 位置
+                   false, false, false, # 不使用 Roll, Pitch, Yaw 姿態
+                   true,  true,  false, # [使用] X, Y 線速度
+                   false, false, true,  # [使用] Yaw 角速度
+                   false, false, false]
+    odom0_differential: false
+
+    # 我們將 IMU 的 Roll, Pitch, Yaw 和角速度輸入進來
+    imu0: /imu/data
+    imu0_config: [false, false, false,
+                  true,  true,  true,   # [使用] Roll, Pitch, Yaw 姿態
+                  false, false, false,
+                  true,  true,  true,   # [使用] Roll, Pitch, Yaw 角速度
+                  false, false, false]
+    imu0_differential: false
+    imu0_remove_gravitational_acceleration: true

@@ -1,0 +1,29 @@
+#VRML_SIM R2023b utf8
+
+PROTO ball_medium [
+  field  SFVec3f     translation  0 0 0
+  field  SFRotation  rotation     0 0 1 0
+  field  SFString    name         "ball_medium"  # Is `Robot.name`.
+]
+
+{
+  Solid {
+    translation IS translation
+    rotation IS rotation
+    children [
+      DEF BALL_MEDIUM_SHAPE Shape {
+        appearance PBRAppearance {
+          baseColor 0.4 0.4 0.5
+          roughness 0.2
+          metalness 0
+        }
+        geometry Sphere {
+          radius 0.03
+        }
+      }
+    ]
+    name IS name
+    boundingObject USE BALL_MEDIUM_SHAPE
+    physics Physics {}
+  }
+}

@@ -1,0 +1,409 @@
+#VRML_SIM R2023b utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/floors/protos/RectangleArena.proto"
+EXTERNPROTO "../protos/MyCobot280Pi.proto"
+EXTERNPROTO "../protos/TurtleBot3Waffle.proto"
+EXTERNPROTO "../protos/gripper.proto"
+
+WorldInfo {
+}
+Viewpoint {
+  orientation 0.20655862458158455 -0.8599316287145805 -0.4667452501603556 5.3325919451682555
+  position -1.6549139447707013 -0.41852349179599535 0.708657086493489
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+RectangleArena {
+  floorSize 5 5
+}
+MyCobot280Pi {
+  translation 3.16079e-07 -0.31 0.15
+  rotation 0 0 1 3.14159
+}
+TurtleBot3Waffle {
+  translation 0.09 -0.25 0
+}
+Robot {
+  translation -1.32 -0.31 0.05
+  rotation 0 0 1 3.14159
+  children [
+    DEF BASE Solid {
+      translation 0 0 -0.05
+      children [
+        DEF BASE_SHAPE Shape {
+          appearance PBRAppearance {
+            roughness 1
+          }
+          geometry Mesh {
+            url [
+              "C:/Users/JordenHuang/webotsProject/mycobot_turtlebot/protos/mycobot280pi_mesh/joint1_pi.dae"
+            ]
+          }
+          castShadows FALSE
+        }
+        DEF JOINT0 HingeJoint {
+          jointParameters HingeJointParameters {
+            axis 0 0 1
+            anchor 0 0 0.08
+          }
+          device [
+            RotationalMotor {
+              name "joint0_rotational_motor"
+              minPosition -2.93217
+              maxPosition 2.93217
+              maxTorque 1000
+            }
+            PositionSensor {
+              name "joint0_position_sensor"
+            }
+          ]
+          endPoint Solid {
+            translation 3.57175e-07 -3.16354e-07 0.0799789
+            rotation -6.090568606669461e-08 1.4825858317877095e-06 -0.999999999998899 1.570801922814062
+            children [
+              DEF JOINT0_SHAPE Shape {
+                appearance PBRAppearance {
+                  roughness 1
+                  metalness 0
+                }
+                geometry Mesh {
+                  url [
+                    "C:/Users/JordenHuang/webotsProject/mycobot_turtlebot/protos/mycobot280pi_mesh/joint2.dae"
+                  ]
+                }
+                castShadows FALSE
+              }
+              DEF JOINT1 HingeJoint {
+                jointParameters HingeJointParameters {
+                  anchor 0.03 0 0.05999999999999999
+                }
+                device [
+                  RotationalMotor {
+                    name "joint1_rotational_motor"
+                    minPosition -2.356194
+                    maxPosition 2.356194
+                    maxTorque 1000
+                  }
+                  PositionSensor {
+                    name "joint1_position_sensor"
+                  }
+                ]
+                endPoint Solid {
+                  translation 0.03 0 0.05999999999999999
+                  rotation 1 0 0 0
+                  children [
+                    DEF JOINT1_SHAPE Shape {
+                      appearance PBRAppearance {
+                        roughness 1
+                        metalness 0
+                      }
+                      geometry Mesh {
+                        url [
+                          "C:/Users/JordenHuang/webotsProject/mycobot_turtlebot/protos/mycobot280pi_mesh/joint3.dae"
+                        ]
+                      }
+                      castShadows FALSE
+                    }
+                    DEF JOINT2 HingeJoint {
+                      jointParameters HingeJointParameters {
+                        anchor 0 0 0.1104
+                      }
+                      device [
+                        RotationalMotor {
+                          name "joint2_rotational_motor"
+                          minPosition -2.617993
+                          maxPosition 2.617993
+                          maxTorque 1000
+                        }
+                        PositionSensor {
+                          name "joint2_position_sensor"
+                        }
+                      ]
+                      endPoint Solid {
+                        translation 0 0 0.1104
+                        rotation 1 0 0 0
+                        children [
+                          DEF JOINT2_SHAPE Shape {
+                            appearance PBRAppearance {
+                              roughness 1
+                              metalness 0
+                            }
+                            geometry Mesh {
+                              url [
+                                "C:/Users/JordenHuang/webotsProject/mycobot_turtlebot/protos/mycobot280pi_mesh/joint4.dae"
+                              ]
+                            }
+                            castShadows FALSE
+                          }
+                          DEF JOINT3 HingeJoint {
+                            jointParameters HingeJointParameters {
+                              anchor -0.0004999999999999999 0 0.09659999999999995
+                            }
+                            device [
+                              RotationalMotor {
+                                name "joint3_rotational_motor"
+                                minPosition -2.530727
+                                maxPosition 2.530727
+                                maxTorque 1000
+                              }
+                              PositionSensor {
+                                name "joint3_position_sensor"
+                              }
+                            ]
+                            endPoint Solid {
+                              translation -0.0004994930248170271 -1.8866528938010482e-05 0.09653388310338637
+                              rotation -2.7775602131665564e-05 -0.26730903097402753 -0.9636108556820238 2.152802685561542e-05
+                              children [
+                                DEF JOINT3_SHAPE Shape {
+                                  appearance PBRAppearance {
+                                    roughness 1
+                                    metalness 0
+                                  }
+                                  geometry Mesh {
+                                    url [
+                                      "C:/Users/JordenHuang/webotsProject/mycobot_turtlebot/protos/mycobot280pi_mesh/joint5_new.obj"
+                                    ]
+                                  }
+                                  castShadows FALSE
+                                }
+                                DEF JOINT4 HingeJoint {
+                                  jointParameters HingeJointParameters {
+                                    axis 0 0 1
+                                    anchor 0.03370000000000001 0 0.034000000000000016
+                                  }
+                                  device [
+                                    RotationalMotor {
+                                      name "joint4_rotational_motor"
+                                      minPosition -2.879792
+                                      maxPosition 2.879792
+                                      maxTorque 1000
+                                    }
+                                    PositionSensor {
+                                      name "joint4_position_sensor"
+                                    }
+                                  ]
+                                  endPoint Solid {
+                                    translation 0.03370000000000001 0 0.034000000000000016
+                                    children [
+                                      DEF JOINT4_SHAPE Shape {
+                                        appearance PBRAppearance {
+                                          roughness 1
+                                          metalness 0
+                                        }
+                                        geometry Mesh {
+                                          url [
+                                            "C:/Users/JordenHuang/webotsProject/mycobot_turtlebot/protos/mycobot280pi_mesh/joint6.dae"
+                                          ]
+                                        }
+                                        castShadows FALSE
+                                      }
+                                      DEF JOINT5 HingeJoint {
+                                        jointParameters HingeJointParameters {
+                                          axis 0 1 0
+                                          anchor -0.00010000000000000113 0.034599999999999985 0.03799999999999999
+                                        }
+                                        device [
+                                          RotationalMotor {
+                                            name "joint5_rotational_motor"
+                                            minPosition -3.14159
+                                            maxPosition 3.14159
+                                            maxTorque 1000
+                                          }
+                                          PositionSensor {
+                                            name "joint5_position_sensor"
+                                          }
+                                        ]
+                                        endPoint Solid {
+                                          translation -0.00010000000000000113 0.034599999999999985 0.03799999999999999
+                                          rotation -0.9999999999999999 0 0 1.570795307179585
+                                          children [
+                                            DEF JOINT5_SHAPE Shape {
+                                              appearance PBRAppearance {
+                                                roughness 1
+                                                metalness 0
+                                              }
+                                              geometry Mesh {
+                                                url [
+                                                  "C:/Users/JordenHuang/webotsProject/mycobot_turtlebot/protos/mycobot280pi_mesh/joint7.dae"
+                                                ]
+                                              }
+                                              castShadows FALSE
+                                            }
+                                            gripper {
+                                            }
+                                          ]
+                                          name "joint5"
+                                          boundingObject Group {
+                                            children [
+                                              Pose {
+                                                translation 0 0 0.007
+                                                children [
+                                                  Cylinder {
+                                                    height 0.013
+                                                    radius 0.02
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                          physics Physics {
+                                          }
+                                        }
+                                      }
+                                    ]
+                                    name "joint4"
+                                    boundingObject Group {
+                                      children [
+                                        Pose {
+                                          translation 0 0.00500004 0.038
+                                          rotation 1 0 0 -1.5707953071795862
+                                          children [
+                                            Cylinder {
+                                              height 0.05
+                                              radius 0.02
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                    physics Physics {
+                                    }
+                                  }
+                                }
+                              ]
+                              name "joint3"
+                              boundingObject Group {
+                                children [
+                                  Pose {
+                                    translation 0.033 0 0.035
+                                    children [
+                                      Cylinder {
+                                        height 0.035
+                                        radius 0.02
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                              physics Physics {
+                              }
+                            }
+                          }
+                        ]
+                        name "joint2"
+                        boundingObject Group {
+                          children [
+                            Pose {
+                              translation -0.033 0 0.05
+                              rotation 0 0 1 0.2617996938995747
+                              children [
+                                Cylinder {
+                                  height 0.075
+                                  radius 0.022
+                                }
+                              ]
+                            }
+                            Pose {
+                              translation 1.01962e-08 0 0.096
+                              rotation 0 1 0 -1.5707953071795862
+                              children [
+                                Cylinder {
+                                  height 0.05
+                                  radius 0.02
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                        physics Physics {
+                        }
+                      }
+                    }
+                  ]
+                  name "join1"
+                  boundingObject Group {
+                    children [
+                      Pose {
+                        translation 0.031 0 0.06
+                        children [
+                          Cylinder {
+                            height 0.07
+                            radius 0.0225
+                            top FALSE
+                          }
+                        ]
+                      }
+                      Pose {
+                        translation 2.67037e-07 2.67038e-07 0.11
+                        rotation 0.5773529358529169 -0.5773489358533613 0.5773489358533613 -2.094395307179586
+                        children [
+                          Cylinder {
+                            height 0.03
+                            radius 0.022
+                            top FALSE
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                  physics Physics {
+                  }
+                }
+              }
+            ]
+            name "joint0"
+            boundingObject Group {
+              children [
+                Pose {
+                  translation 0.0300002 0 0.06
+                  rotation 0 1 0 1.5708
+                  children [
+                    Cylinder {
+                      height 0.03
+                      radius 0.025
+                    }
+                  ]
+                }
+              ]
+            }
+            physics Physics {
+            }
+          }
+        }
+      ]
+      name "base"
+      boundingObject Pose {
+        translation 0 0 0.105
+        children [
+          Cylinder {
+            height 0.05
+            radius 0.025
+          }
+        ]
+      }
+      physics Physics {
+      }
+    }
+  ]
+  name "MyCobot(2)"
+  boundingObject Pose {
+    translation 0 0 -0.01
+    children [
+      Box {
+        size 0.1 0.1 0.08
+      }
+    ]
+  }
+  physics Physics {
+    density -1
+    mass 5
+    centerOfMass [
+      0 0.03 0
+    ]
+  }
+  controller "mycobot_enhance"
+}

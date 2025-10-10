@@ -1,0 +1,29 @@
+#VRML_SIM R2023b utf8
+
+PROTO ball_large [
+  field  SFVec3f     translation  0 0 0
+  field  SFRotation  rotation     0 0 1 0
+  field  SFString    name         "ball_large"  # Is `Robot.name`.
+]
+
+{
+  Solid {
+    translation IS translation
+    rotation IS rotation
+    children [
+      DEF BALL_LARGE_SHAPE Shape {
+        appearance PBRAppearance {
+          baseColor 0.35 0.35 0.4
+          roughness 0.2
+          metalness 0
+        }
+        geometry Sphere {
+          radius 0.06
+        }
+      }
+    ]
+    name IS name
+    boundingObject USE BALL_LARGE_SHAPE
+    physics Physics {}
+  }
+}

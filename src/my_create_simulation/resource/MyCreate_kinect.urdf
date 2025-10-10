@@ -1,114 +1,14 @@
 <?xml version="1.0"?>
-<robot name="/home/jordenhuang/ROS2-Project/src/my_create_map_webots/resource/MyCreate_realsense.urdf" xmlns:xacro="http://ros.org/wiki/xacro">
+<robot name="/home/jordenhuang/ROS2-Project/src/my_create_simulation/resource/MyCreate_kinect_.urdf" xmlns:xacro="http://ros.org/wiki/xacro">
   <webots>
-    <plugin type="my_create_map_webots.my_create_driver_realsense.MyCreateDriverRealsense"/>
+    <plugin type="my_create_simulation.my_create_driver_kinect.MyCreateDriverKinect"/>
   </webots>
+  <!-- ======================= BASE LINK ======================= -->
+  <link name="base_link"/>
 
-  <link name="base_link">
-    <visual>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-      <geometry>
-        <box size="0.027 0.123 0.025"/>
-      </geometry>
-    </visual>
-    <collision>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-      <geometry>
-        <box size="0.027 0.123 0.025"/>
-      </geometry>
-    </collision>
-  </link>
-
-
-  <!-- IMU link -->
-  <link name="imu_link">
-  </link>
-  <joint name="MPU9250_to_imu_link_joint" type="fixed">
-    <parent link="MPU-9250"/>
-    <child link="imu_link"/>
-    <origin xyz="0 0 0" rpy="0 0 0"/>
-  </joint>
-
-  <link name="MPU-9250">
-  </link>
-  <joint name="base_link_MPU-9250_joint" type="fixed">
-    <parent link="base_link"/>
-    <child link="MPU-9250"/>
-    <origin xyz="0.15 0 0.05" rpy="0 0 0"/>
-  </joint>
-
-  <link name="MPU-9250 compass">
-  </link>
-  <joint name="MPU-9250_MPU-9250 compass_joint" type="fixed">
-    <parent link="MPU-9250"/>
-    <child link="MPU-9250 compass"/>
-    <origin xyz="0 0 0" rpy="0 0 0"/>
-  </joint>
-  <link name="MPU-9250 gyro">
-  </link>
-  <joint name="MPU-9250_MPU-9250 gyro_joint" type="fixed">
-    <parent link="MPU-9250"/>
-    <child link="MPU-9250 gyro"/>
-    <origin xyz="0 0 0" rpy="0 0 0"/>
-  </joint>
-  <link name="MPU-9250 accelerometer">
-  </link>
-  <joint name="MPU-9250_MPU-9250 accelerometer_joint" type="fixed">
-    <parent link="MPU-9250"/>
-    <child link="MPU-9250 accelerometer"/>
-    <origin xyz="0 0 0" rpy="0 0 0"/>
-  </joint>
-
-  <link name="solid">
-  </link>
-  <joint name="base_link_solid_joint" type="fixed">
-    <parent link="base_link"/>
-    <child link="solid"/>
-    <origin xyz="0.013 0 0" rpy="1.570798 -0.000002 1.570801"/>
-  </joint>
-
-  <link name="RealsenseD455_display">
-  </link>
-  <joint name="base_link_RealsenseD455_display_joint" type="fixed">
-    <parent link="base_link"/>
-    <child link="RealsenseD455_display"/>
-    <origin xyz="0 0 0" rpy="0 0 0"/>
-  </joint>
-  <link name="RealsenseD455_receiver">
-  </link>
-  <joint name="base_link_RealsenseD455_receiver_joint" type="fixed">
-    <parent link="base_link"/>
-    <child link="RealsenseD455_receiver"/>
-    <origin xyz="0 0 0" rpy="0 0 0"/>
-  </joint>
-  <link name="RealsenseD455_emitter">
-  </link>
-  <joint name="base_link_RealsenseD455_emitter_joint" type="fixed">
-    <parent link="base_link"/>
-    <child link="RealsenseD455_emitter"/>
-    <origin xyz="0 0 0" rpy="0 0 0"/>
-  </joint>
-
-  <!-- <link name="RealsenseD455_rgb">
-  </link>
-  <joint name="base_link_RealsenseD455_rgb_joint" type="fixed">
-    <parent link="base_link"/>
-    <child link="RealsenseD455_rgb"/>
-    <origin xyz="0.005 0 0" rpy="-1.570796 0 -1.570796"/>
-  </joint>
-
-  <link name="RealsenseD455_depth">
-  </link>
-  <joint name="base_link_RealsenseD455_depth_joint" type="fixed">
-    <parent link="base_link"/>
-    <child link="RealsenseD455_depth"/>
-    <origin xyz="0.005 0 0" rpy="0 0 0"/>
-  </joint> -->
-
-
-  <!-- ======================= REALSENSE CAMERA ======================= -->
-  <!-- This is the physical body of the Realsense D455 camera -->
-  <link name="Realsense">
+  <!-- ======================= KINECT CAMERA ======================= -->
+  <!-- This is the physical body of the Kinect camera -->
+  <link name="Kinect">
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
@@ -124,19 +24,28 @@
   </link>
 
   <!-- This joint mounts the camera body onto the robot's base link -->
-  <joint name="base_to_realsense_joint" type="fixed">
+  <joint name="base_to_kinect_joint" type="fixed">
     <parent link="base_link"/>
-    <child link="Realsense"/>
+    <child link="Kinect"/>
     <!-- Position the camera 14cm forward and 10cm up from the base_link origin -->
-    <origin xyz="0.14 0 0.05" rpy="0 0 0"/>
+    <origin xyz="0.14 0 0.10" rpy="0 0 0"/>
+    <!-- <origin xyz="0.14 0 0.10" rpy="0 0.261799 0"/> -->
+    <!-- <origin xyz="0.14 0 0.10" rpy="0 0.174532 0"/> -->
   </joint>
 
-  <link name="camera_rgb_frame">
-  </link>
-  <joint name="realsense_to_camera_rgb_joint" type="fixed">
-    <parent link="Realsense"/>
+
+  <!-- CORRECTED: RGB Optical Frame -->
+  <!-- The link for the optical center of the RGB camera -->
+  <link name="camera_rgb_frame"/>
+
+  <!-- This joint connects the optical frame to the camera BODY -->
+  <joint name="kinect_to_camera_rgb_joint" type="fixed">
+    <parent link="Kinect"/> <!-- CORRECTED: Parent is now the camera body -->
     <child link="camera_rgb_frame"/>
-    <origin xyz="0.005 0 0" rpy="0 0 0"/>
+    <!-- The origin is now relative to the Kinect link.
+         The standard ROS optical rotation is applied here. -->
+    <!-- <origin xyz="0 0 0" rpy="0.0 -0.261799 0.0"/> -->
+    <origin xyz="0 0 0" rpy="0 0 0"/>
   </joint>
 
   <!-- camera rgb optical frame -->
@@ -148,12 +57,19 @@
     <origin xyz="0 0 0" rpy="-1.570796 0 -1.570796"/>
   </joint>
 
-  <link name="camera_depth_frame">
-  </link>
-  <joint name="realsense_to_camera_depth_joint" type="fixed">
-    <parent link="Realsense"/>
+
+  <!-- CORRECTED: Depth Optical Frame -->
+  <!-- The link for the optical center of the Depth camera -->
+  <link name="camera_depth_frame"/>
+
+  <!-- This joint connects the depth optical frame to the camera BODY -->
+  <joint name="kinect_to_camera_depth_joint" type="fixed">
+    <parent link="Kinect"/> <!-- CORRECTED: Parent is now the camera body -->
     <child link="camera_depth_frame"/>
-    <origin xyz="0.005 0 0" rpy="0 0 0"/>
+    <!-- Assume the depth sensor is 2.5cm to the left of the RGB sensor (relative to Kinect body) -->
+    <!-- <origin xyz="0 -0.025 0" rpy="-1.570796 0 -1.570796"/> -->
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <!-- <origin xyz="0 0 0" rpy="0.0 -0.261799 0.0"/> -->
   </joint>
 
   <!-- camera rgb optical frame -->
@@ -165,7 +81,6 @@
     <origin xyz="0 0 0" rpy="-1.570796 0 -1.570796"/>
   </joint>
   <!-- End camera thingy -->
-
 
   <link name="stand_left_back_1">
     <visual>

@@ -11,7 +11,7 @@ from launch_ros.actions import Node
 import os
 
 def generate_launch_description():
-    package_dir = get_package_share_directory('my_create_map_webots')
+    package_dir = get_package_share_directory('my_create_simulation')
     nav2_params_file = os.path.join(package_dir, 'config', 'nav2_params.yaml')
     explore_params_file = os.path.join(package_dir, 'config', 'explore.yaml')
     # explore_config = os.path.join(

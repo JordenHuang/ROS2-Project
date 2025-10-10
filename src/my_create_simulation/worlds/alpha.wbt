@@ -80,25 +80,25 @@ Robot {
       appearance DEF CREATE_APPEARANCE PBRAppearance {
         baseColorMap ImageTexture {
           url [
-            "/home/jordenhuang/ROS2-Project/src/my_create_map_webots/protos/create_textures/create_base_color.jpg"
+            "/home/jordenhuang/ROS2-Project/src/my_create_simulation/protos/create_textures/create_base_color.jpg"
           ]
         }
         roughness 0.2
         roughnessMap ImageTexture {
           url [
-            "/home/jordenhuang/ROS2-Project/src/my_create_map_webots/protos/create_textures/create_roughness.jpg"
+            "/home/jordenhuang/ROS2-Project/src/my_create_simulation/protos/create_textures/create_roughness.jpg"
           ]
         }
         metalness 0
         normalMap ImageTexture {
           url [
-            "/home/jordenhuang/ROS2-Project/src/my_create_map_webots/protos/create_textures/create_normal.jpg"
+            "/home/jordenhuang/ROS2-Project/src/my_create_simulation/protos/create_textures/create_normal.jpg"
           ]
         }
         normalMapFactor 0.3
         occlusionMap ImageTexture {
           url [
-            "/home/jordenhuang/ROS2-Project/src/my_create_map_webots/protos/create_textures/create_occlusion.jpg"
+            "/home/jordenhuang/ROS2-Project/src/my_create_simulation/protos/create_textures/create_occlusion.jpg"
           ]
         }
       }

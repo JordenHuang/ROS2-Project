@@ -41,7 +41,7 @@ def generate_launch_description():
     create = GroupAction(
         actions=[
             SetRemap(src='cmd_vel', dst='/cmd_vel_out'),
-            SetRemap(src='odom', dst='/wheel/odom'),
+            # SetRemap(src='odom', dst='/wheel/odom'),
             IncludeLaunchDescription(
                 AnyLaunchDescriptionSource([create_launch])
             ),
@@ -108,8 +108,10 @@ def generate_launch_description():
         }],
         remappings=[
             ('rgb/image', '/camera/camera/color/image_raw'),
-            ('depth/image', '/camera/camera/depth/image_rect_raw'),
+            # ('depth/image', '/camera/camera/depth/image_rect_raw'),
             ('rgb/camera_info', '/camera/camera/color/camera_info'),
+
+            ('depth/image', '/camera/camera/aligned_depth_to_color/image_raw'),
         ],
     )
 
@@ -154,7 +156,7 @@ def generate_launch_description():
     return LaunchDescription([
         create,
         realsense,
-        # rtabmap_rgbd_sync_node,
+        rtabmap_rgbd_sync_node,
         depth_image_to_laserscan,
         robot_state_publisher,
         # ekf_filter_node,

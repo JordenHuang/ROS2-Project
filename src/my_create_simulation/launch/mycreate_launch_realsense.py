@@ -55,6 +55,7 @@ def generate_launch_description():
         output='screen',
         parameters=[{
             'publish_tf': False,
+            # 'use_mag': False,
         }],
         remappings=[
             ('/imu/data_raw', 'imu/data_without_mag'),

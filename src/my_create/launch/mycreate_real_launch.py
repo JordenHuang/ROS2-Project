@@ -41,7 +41,7 @@ def generate_launch_description():
     create = GroupAction(
         actions=[
             SetRemap(src='cmd_vel', dst='/cmd_vel_out'),
-            SetRemap(src='odom', dst='/wheel/odom'),
+            # SetRemap(src='odom', dst='/wheel/odom'),
             IncludeLaunchDescription(
                 AnyLaunchDescriptionSource([create_launch])
             ),

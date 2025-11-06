@@ -124,7 +124,7 @@ def generate_launch_description():
         parameters=[{
             'use_sim_time': False,
             'frame_id': 'base_link',
-        # 'subscribe_rgbd': True,
+        'subscribe_rgbd': True,
         # 'subscribe_rgb': True,
             'subscribe_depth': True,
             'subscribe_scan': True,
@@ -147,7 +147,7 @@ def generate_launch_description():
             "Vis/MinInliers": "30",
 
             "Grid/Sensor": "2",
-            'Grid/MaxObstacleHeight': '0.4',
+            'Grid/MaxObstacleHeight': '0.3',
             'Grid/NormalsSegmentation': 'false',
             "Grid/RayTracing": "true",
             'Grid/RangeMax': '4.0',
@@ -161,12 +161,12 @@ def generate_launch_description():
             'qos_scan': 1,
         }],
         remappings=[
-            ('rgb/camera_info', '/camera/camera/color/camera_info'),
-            ('rgb/image', '/camera/camera/color/image_raw'),
-            # ('depth/image', '/camera/camera/depth/image_rect_raw'),
-        ("depth/image", "/camera/camera/aligned_depth_to_color/image_raw"),
+        #     ('rgb/camera_info', '/camera/camera/color/camera_info'),
+        #     ('rgb/image', '/camera/camera/color/image_raw'),
+        #     # ('depth/image', '/camera/camera/depth/image_rect_raw'),
+        # ("depth/image", "/camera/camera/aligned_depth_to_color/image_raw"),
 
-        # ('rgbd_image', 'rgbd_image/compressed'),
+        ('rgbd_image', 'rgbd_image/compressed'),
             ('scan', '/d2l/scan'),
             # ('odom', '/odometry/filtered'),
         ],

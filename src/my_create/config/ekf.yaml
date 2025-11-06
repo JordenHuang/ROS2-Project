@@ -8,22 +8,26 @@ ekf_filter_node:
     base_link_frame: base_link  # 機器人的基準座標系
     world_frame: odom           # 我們只做 odom，不做 map
 
+    # publish_tf: true
+    two_d_mode: true
+
     # [輸入設定]
     # 我們將輪式里程計的 X, Y, Yaw 速度輸入進來
-    odom0: /odom # /wheel/odom
-    odom0_config: [false, false, false, # 不使用 X, Y, Z 位置
-                   false, false, false, # 不使用 Roll, Pitch, Yaw 姿態
-                   true,  true,  false, # [使用] X, Y 線速度
-                   false, false, true,  # [使用] Yaw 角速度
+    odom0: /wheel/odom
+    odom0_config: [false, false, false,  # Position: 不使用
+                   false, false, false,  # Orientation: 不使用
+                   true,  true,  false,  # Linear Velocity: [只信任] Vx, Vy
+                   false, false, true,  # Angular Velocity: [完全不信任] 輪式里程計的旋轉
                    false, false, false]
     odom0_differential: false
 
     # 我們將 IMU 的 Roll, Pitch, Yaw 和角速度輸入進來
-    imu0: /camera/camera/imu # /imu/data
+    # imu0: /camera/camera/imu # /imu/data
+    imu0: /imu/data
     imu0_config: [false, false, false,
-                  true,  true,  true,   # [使用] Roll, Pitch, Yaw 姿態
+                  false, false, false,  # Orientation: [不信任] IMU 的絕對姿態
                   false, false, false,
-                  true,  true,  true,   # [使用] Roll, Pitch, Yaw 角速度
+                  true,  true,  true,   # Angular Velocity: [信任 R, P, Y 角速度]
                   false, false, false]
     imu0_differential: false
     imu0_remove_gravitational_acceleration: true

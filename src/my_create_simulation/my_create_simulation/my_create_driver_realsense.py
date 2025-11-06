@@ -120,6 +120,7 @@ class MyCreateDriverRealsense:
         self.imu_pub = self.node.create_publisher(Imu, "/imu/data_without_mag", reliable_qos_profile)
         self.mag_pub = self.node.create_publisher(MagneticField, "/imu/mag", reliable_qos_profile)
         self.odom_pub = self.node.create_publisher(Odometry, "/wheel/odom", reliable_qos_profile)
+        # self.odom_pub = self.node.create_publisher(Odometry, "/odom", reliable_qos_profile)
         # self.tf_broadcaster = TransformBroadcaster(self.node)
 
         # Subscriber
@@ -200,6 +201,7 @@ class MyCreateDriverRealsense:
         # 發佈 Odometry 訊息
         self.odom_pub.publish(odom_msg)
 
+        # 如果沒有使用IMU
         # --- 發佈 TF 變換 (odom -> base_link) ---
         # t = TransformStamped()
         # t.header.stamp = now

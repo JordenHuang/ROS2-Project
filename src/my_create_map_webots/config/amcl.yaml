@@ -1,0 +1,42 @@
+amcl:
+  ros__parameters:
+    use_sim_time: True
+    min_particles: 500
+    max_particles: 3000
+    kld_err: 0.05
+    kld_z: 0.99
+    update_min_d: 0.20
+    update_min_a: 0.20
+    resample_interval: 1
+    transform_tolerance: 0.5
+    recovery_alpha_slow: 0.001
+    recovery_alpha_fast: 0.1
+    initial_pose:
+      x: 0.0 # 初始位姿 x
+      y: 0.0 # 初始位姿 y
+      z: 0.0
+      yaw: 0.0 # 初始位姿 yaw
+    # 運動模型
+    odom_alpha1: 0.2
+    odom_alpha2: 0.2
+    odom_alpha3: 0.8
+    odom_alpha4: 0.2
+    odom_alpha5: 0.1 # Differential drive
+    # 傳感器模型
+    laser_model_type: "likelihood_field"
+    laser_likelihood_max_dist: 2.0
+    laser_max_range: 4.0 # 應與你的depth_image_to_laserscan的range_max匹配
+    laser_min_range: 0.1 # 應與你的depth_image_to_laserscan的range_min匹配
+    laser_z_hit: 0.5
+    laser_z_short: 0.05
+    laser_z_max: 0.05
+    laser_z_rand: 0.5
+    laser_sigma_hit: 0.2
+    laser_lambda_short: 0.1
+    # 訂閱主題
+    set_initial_pose: true # 如果想手動設定初始位姿，設為true
+    tf_broadcast: true
+    global_frame_id: map
+    odom_frame_id: odom
+    base_frame_id: base_link
+    scan_topic: /d2l/scan # 你的LaserScan主題

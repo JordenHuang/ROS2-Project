@@ -41,6 +41,8 @@ setup(
 
         # Config files
         (f'share/{package_name}/config', glob('config/*')),
+
+        (f'share/{package_name}/maps', glob('maps/*')),
     ],
     
     install_requires=['setuptools'],

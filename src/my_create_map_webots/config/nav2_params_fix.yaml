@@ -1,0 +1,191 @@
+amcl:
+  ros__parameters:
+    use_sim_time: True
+    alpha1: 0.2
+    alpha2: 0.2
+    alpha3: 0.2
+    alpha4: 0.2
+    alpha5: 0.2
+    base_frame_id: "base_link"
+    odom_frame_id: "odom"
+    global_frame_id: "map"
+    robot_model_type: "nav2_amcl::DifferentialMotionModel"    # 运动模型类型，表示为差速运动模型
+    scan_topic: "/d2l/scan"
+    min_particles: 500
+    max_particles: 2000
+    update_min_d: 0.1
+    update_min_a: 0.1
+    resample_interval: 1
+    transform_tolerance: 1.0
+    set_initial_pose: True
+    initial_pose:
+      x: 3.3 # 例如，初始 x 座標
+      y: 16.5 # 例如，初始 y 座標
+      z: 0.04 # 例如，四元數的 z 分量 (如果 yaw 為 0，則 z=0)
+      w: 1.0 # 例如，四元數的 w 分量 (如果 yaw 為 0，則 w=1)
+    map_topic: map
+
+map_server:
+  ros__parameters:
+    use_sim_time: True
+
+planner_server:
+  ros__parameters:
+    use_sim_time: True
+    expected_planner_frequency: 5.0
+    planner_plugins: ["GridBased"]
+    GridBased:
+      plugin: "nav2_navfn_planner/NavfnPlanner"
+      tolerance: 0.5
+      use_astar: false
+      allow_unknown: true
+
+controller_server:
+  ros__parameters:
+    use_sim_time: True
+    controller_frequency: 10.0
+    min_vel_x: 0.0
+    max_vel_x: 0.26
+    min_vel_theta: 0.0
+    max_vel_theta: 1.0
+    controller_plugins: ["FollowPath"]
+
+    FollowPath:
+      plugin: "dwb_core::DWBLocalPlanner"
+      debug_trajectory_details: False
+      critics: ["RotateToGoal", "Oscillation", "ObstacleFootprint", "GoalDist", "PathDist"] # <--- 这里修改了
+      # 機器人運動參數
+      min_vel_x: 0.0
+      max_vel_x: 0.26
+      min_vel_theta: 0.0
+      max_vel_theta: 1.0
+      acc_lim_x: 2.5
+      acc_lim_theta: 3.2
+      # 軌跡採樣參數
+      vx_samples: 20
+      vtheta_samples: 40
+      sim_time: 1.7
+      linear_granularity: 0.05
+      angular_granularity: 0.025
+      # goal checker plugin
+      goal_checker_plugins: ["GoalChecker"]
+
+    # 注意這裡的縮進！這些批評家配置應該與 FollowPath 同級
+    RotateToGoal:
+      plugin: "dwb_critics::RotateToGoalCritic"
+      scale: 3.0 # 權重，根據需要調整
+    Oscillation:
+      plugin: "dwb_critics::OscillationCritic"
+      scale: 1.0
+    ObstacleFootprint:
+      plugin: "dwb_critics::ObstacleFootprintCritic"
+      scale: 0.05 # 對障礙物的規避，請確保這不是0，除非你不需要規避
+    GoalDist:
+      plugin: "dwb_critics::GoalDistCritic"
+      scale: 20.0
+    PathDist: # <--- 这里修改了
+      plugin: "dwb_critics::PathDistCritic" # <--- 这里修改了
+      scale: 30.0
+
+    GoalChecker:
+      plugin: "nav2_controller::SimpleGoalChecker"
+      xy_goal_tolerance: 0.2
+      yaw_goal_tolerance: 0.2
+      stateful: True
+
+
+bt_navigator:
+  ros__parameters:
+    use_sim_time: True
+    global_frame: map
+    robot_base_frame: base_link
+    odom_topic: /odom
+    default_bt_xml_filename: "navigate_w_replanning_time.xml"
+    plugin_lib_names:
+      - nav2_compute_path_to_pose_action_bt_node
+      - nav2_follow_path_action_bt_node
+      - nav2_back_up_action_bt_node
+      - nav2_spin_action_bt_node
+      - nav2_wait_action_bt_node
+      - nav2_clear_costmap_service_bt_node
+      - nav2_is_stuck_condition_bt_node
+      - nav2_goal_reached_condition_bt_node
+      - nav2_initial_pose_received_condition_bt_node
+      - nav2_distance_traveled_condition_bt_node
+      - nav2_recovery_node_bt_node
+
+waypoint_follower:
+  ros__parameters:
+    use_sim_time: True
+    loop_rate: 20
+    stop_on_failure: true
+    waypoint_task_executor_plugin: "wait_at_waypoint"
+    wait_at_waypoint:
+      plugin: "nav2_waypoint_follower::WaitAtWaypoint"
+      enabled: True
+      waypoint_pause_duration: 2000  # ms
+
+local_costmap:
+  local_costmap:
+    ros__parameters:
+      use_sim_time: True
+      update_frequency: 5.0
+      publish_frequency: 2.0
+      global_frame: odom
+      robot_base_frame: base_link
+      rolling_window: true
+      width: 6
+      height: 6
+      resolution: 0.05
+      footprint: "[[0.20, 0.20], [0.20, -0.20], [-0.20, -0.20], [-0.20, 0.20]]"
+      plugins: ["obstacle_layer", "inflation_layer"]
+
+      obstacle_layer:
+        plugin: "nav2_costmap_2d::ObstacleLayer"
+        enabled: True
+        observation_sources: scan
+        scan:
+          topic: /d2l/scan
+          max_obstacle_height: 2.0
+          clearing: True
+          marking: True
+          data_type: "LaserScan"
+
+      inflation_layer:
+        plugin: "nav2_costmap_2d::InflationLayer"
+        enabled: True
+        inflation_radius: 0.5
+
+global_costmap:
+  global_costmap:
+    ros__parameters:
+      use_sim_time: True
+      update_frequency: 1.0
+      publish_frequency: 1.0
+      global_frame: map
+      robot_base_frame: base_link
+      width: 50
+      height: 50
+      resolution: 0.05
+      footprint: "[[0.20, 0.20], [0.20, -0.20], [-0.20, -0.20], [-0.20, 0.20]]"
+      plugins: ["static_layer", "obstacle_layer", "inflation_layer"]
+
+      static_layer:
+        plugin: "nav2_costmap_2d::StaticLayer"
+        map_subscribe_transient_local: True
+
+      obstacle_layer:
+        plugin: "nav2_costmap_2d::ObstacleLayer"
+        enabled: True
+        observation_sources: scan
+        scan:
+          topic: /d2l/scan
+          max_obstacle_height: 2.0
+          clearing: True
+          marking: True
+          data_type: "LaserScan"
+
+      inflation_layer:
+        plugin: "nav2_costmap_2d::InflationLayer"
+        enabled: True
+        inflation_radius: 0.5

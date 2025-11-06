@@ -200,7 +200,7 @@ def generate_launch_description():
         # imu_filter,
         # ekf_filter_node,
     # rtabmap_rgbd_sync_node,
-        # explore_lite,
+        explore_lite,
         twist_mux_node,
         # joy,
         rviz2,
